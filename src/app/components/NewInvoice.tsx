@@ -1,4 +1,5 @@
 import React from "react";
+import InputField from "@/app/components/InputField";
 
 function NewInvoice() {
   return (
@@ -8,7 +9,7 @@ function NewInvoice() {
         <p className="dark:text-white">Go Back</p>
       </div>
       <h1 className="dark:text-white text-2xl mb-[3rem]">New Invoice</h1>
-      <p className="text-violet-700">Bill From</p>
+      <InputField labelName={"Bill From"} />
     </form>
   );
 }

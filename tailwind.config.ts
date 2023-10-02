@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         themeColor: "rgb(30,33,57)",
         themeColorBg: "rgb(20,22,37)",
+        invoiceMain: "rgba(124, 93, 250, 1)",
+        invoiceLabel: "rgba(126, 136, 195, 1)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
