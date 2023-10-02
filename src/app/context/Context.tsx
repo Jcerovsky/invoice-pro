@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, ReactNode, useEffect } from "react";
 import { useObjectState } from "@/app/hooks/useObjectState";
+import theme from "tailwindcss/defaultTheme";
 
 interface IContextProps {
   theme: string;
@@ -20,7 +21,7 @@ const getLocalStorageItem = (key: string, defaultValue: any) => {
 
 function ContextProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useObjectState<IContextProps>({
-    theme: getLocalStorageItem("theme", "light"),
+    theme: getLocalStorageItem("theme", "dark"),
     setState: () => {},
   });
 
