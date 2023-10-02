@@ -1,6 +1,12 @@
+"use client";
+
+import React from "react";
+import Navbar from "@/app/components/Navbar";
 
 export default function Home() {
   return (
-    <h1 className='text-2xl'>test</h1>
-  )
+    <>
+      <Navbar />
+    </>
+  );
 }
