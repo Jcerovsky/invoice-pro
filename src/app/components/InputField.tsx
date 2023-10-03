@@ -4,6 +4,7 @@ interface IInputProps {
   labelName: string;
   id?: string;
   placeholder?: string;
+  type?: string;
   style?: string;
   value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,6 +14,7 @@ function InputField({
   labelName,
   id,
   placeholder,
+  type = "text",
   style,
   value,
   onChange,
@@ -27,7 +29,7 @@ function InputField({
         {labelName}{" "}
       </label>
       <input
-        type="text"
+        type={type}
         id={`${labelName}-${id}`}
         className="border border-lightPurple dark:border-[rgba(37,_41,_69,_1)] dark:text-gray-200 rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
         px-4"

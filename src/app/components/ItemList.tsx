@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import InputField from "@/app/components/InputField";
 import { Context } from "@/app/context/Context";
 import { formatNumber } from "@/app/utils/formatNumber";
 
 function ItemList() {
   const { name, quantity, price, total, setState } = useContext(Context)!;
+
+  useEffect(() => {
+    setState({ total: quantity * price });
+  }, [quantity, price]);
 
   return (
     <div>
@@ -21,12 +25,14 @@ function ItemList() {
           labelName={"Qty."}
           placeholder={"1"}
           style={"flex-[3_1_0%]"}
+          type={"number"}
           value={quantity}
           onChange={(e) => setState({ quantity: +e.target.value })}
         />
         <InputField
           labelName={"Price"}
           placeholder={"0"}
+          type={"number"}
           style={"flex-[3_1_0%]"}
           value={price}
           onChange={(e) => setState({ price: +e.target.value })}
