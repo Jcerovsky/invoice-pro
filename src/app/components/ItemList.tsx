@@ -1,36 +1,42 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useContext } from "react";
 import InputField from "@/app/components/InputField";
+import { Context } from "@/app/context/Context";
 
 function ItemList() {
-  const [totalSum, setTotalSum] = useState<number>(0);
+  const { name, quantity, price, total, setState } = useContext(Context)!;
 
-  const qtyRef = useRef();
+  console.log(name, quantity, price);
 
   return (
     <div>
-      <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
       <div className="flex flex-wrap items-center mb-6 gap-3 ">
         <InputField
           labelName={"Item Name"}
           style="max-xs:basis-full flex-[12_1_0%]"
+          value={name}
+          onChange={(e) => setState({ name: e.target.value })}
         />
         <InputField
           labelName={"Qty."}
           placeholder={"1"}
           style={"flex-[3_1_0%]"}
+          value={quantity}
+          onChange={(e) => setState({ quantity: +e.target.value })}
         />
         <InputField
           labelName={"Price"}
           placeholder={"0"}
           style={"flex-[3_1_0%]"}
+          value={price}
+          onChange={(e) => setState({ price: +e.target.value })}
         />
         <div className="relative flex-[3_1_0%]">
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">
             Total
           </p>
-          <p className="font-bold dark:text-white mt-[1.25rem]">${totalSum}</p>
+          <p className="font-bold dark:text-white mt-[1.25rem]">${total}</p>
         </div>
         <div className="pt-3 mt-auto mb-auto justify-self-end">
           <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">

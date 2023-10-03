@@ -38,6 +38,10 @@ interface Invoice {
 interface IContextProps {
   theme: string;
   allInvoices: Invoice[];
+  name: string;
+  quantity: number;
+  price: number;
+  total: number;
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -56,11 +60,23 @@ function ContextProvider({ children }: { children: ReactNode }) {
     theme: getLocalStorageItem("theme", "dark"),
     setState: () => {},
     allInvoices: data,
+    name: "",
+    quantity: 1,
+    price: 0,
+    total: 0,
   });
 
   return (
     <Context.Provider
-      value={{ theme: state.theme, setState, allInvoices: state.allInvoices }}
+      value={{
+        theme: state.theme,
+        setState,
+        allInvoices: state.allInvoices,
+        name: state.name,
+        quantity: state.quantity,
+        price: state.price,
+        total: state.total,
+      }}
     >
       {children}
     </Context.Provider>

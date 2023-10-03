@@ -1,8 +1,10 @@
+"use client";
+
 import React from "react";
 import InputField from "@/app/components/InputField";
 import Image from "next/image";
-import ItemList from "@/app/components/ItemList";
 import Button from "@/app/components/Button";
+import ItemList from "@/app/components/ItemList";
 
 function NewInvoice() {
   return (
@@ -66,7 +68,10 @@ function NewInvoice() {
           </div>
         </div>
       </div>
-      <ItemList />
+      <div>
+        <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
+        <ItemList />
+      </div>
       <Button
         style={
           "bg-purple-50 hover:bg-blue-100 text-mediumPurple mb-[2.875rem] dark:bg-[rgba(124,_93,_250,_1)] dark:text-gray-300 dark:hover:bg-purple-500"

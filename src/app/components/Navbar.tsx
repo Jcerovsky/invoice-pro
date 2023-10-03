@@ -2,6 +2,7 @@
 
 import React, { useContext, useEffect } from "react";
 import { Context } from "@/app/context/Context";
+import NewInvoice from "@/app/components/NewInvoice";
 
 function Navbar() {
   const { theme, setState } = useContext(Context)!;
