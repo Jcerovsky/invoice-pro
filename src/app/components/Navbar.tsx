@@ -19,7 +19,7 @@ function Navbar() {
 
   return (
     <div
-      className="bg-themeColor flex items-center h-[5rem] overflow-hidden fixed w-screen desktop:flex-col
+      className="bg-themeColor flex items-center h-[5rem] overflow-hidden w-screen desktop:flex-col
     desktop:h-screen desktop:w-[5rem] "
     >
       <div className="bg-gradient-to-b from-violet-600 to-violet-400 rounded-r-2xl w-[5rem] h-[5rem] flex">

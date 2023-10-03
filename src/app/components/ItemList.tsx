@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useRef, useState } from "react";
 import InputField from "@/app/components/InputField";
+import Image from "next/image";
 
 function ItemList() {
   const [totalSum, setTotalSum] = useState<number>(0);
@@ -17,6 +20,12 @@ function ItemList() {
           <p className="text-mediumPurple">Total</p>
           <p className="font-bold">${totalSum}</p>
         </div>
+        <Image
+          src="/assets/icon-delete.svg"
+          alt="delete-bin-icon"
+          width={12}
+          height={16}
+        />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import ContextProvider from "@/app/context/Context";
 import React from "react";
 
 const league_spartan = League_Spartan({
-  weight: ["300", "700", "900"],
+  weight: ["300", "500", "700", "900"],
   subsets: ["latin"],
 });
 
