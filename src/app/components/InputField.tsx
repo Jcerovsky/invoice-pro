@@ -7,6 +7,7 @@ interface IInputProps {
   type?: string;
   style?: string;
   value?: string | number;
+  min?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,6 +18,7 @@ function InputField({
   type = "text",
   style,
   value,
+  min,
   onChange,
 }: IInputProps) {
   return (
@@ -37,6 +39,7 @@ function InputField({
         value={value}
         onChange={onChange}
         required={true}
+        min={min}
       />
     </div>
   );

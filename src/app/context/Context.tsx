@@ -40,7 +40,7 @@ interface IContextProps {
   allInvoices: Invoice[];
   name: string;
   quantity: number;
-  price: number;
+  price: number | string;
   total: number;
   setState: (newState: Partial<IContextProps>) => void;
 }
@@ -62,7 +62,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
     allInvoices: data,
     name: "",
     quantity: 1,
-    price: 0,
+    price: "",
     total: 0,
   });
 

@@ -9,9 +9,13 @@ function ItemList() {
   const { name, quantity, price, total, setState } = useContext(Context)!;
 
   useEffect(() => {
-    setState({ total: quantity * price });
+    setState({ total: quantity * +price });
   }, [quantity, price]);
 
+  const handlePriceChange = (value: string) => {
+    if (price === "0") return setState({ price: "" });
+    setState({ price: value });
+  };
   return (
     <div>
       <div className="flex flex-wrap items-center mb-6 gap-3 ">
@@ -33,9 +37,9 @@ function ItemList() {
           labelName={"Price"}
           placeholder={"0"}
           type={"number"}
-          style={"flex-[3_1_0%]"}
           value={price}
-          onChange={(e) => setState({ price: +e.target.value })}
+          style={"flex-[4_1_0%]"}
+          onChange={(e) => handlePriceChange(e.target.value)}
         />
         <div className="relative flex-[3_1_0%]">
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">
