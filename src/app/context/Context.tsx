@@ -39,7 +39,7 @@ interface IContextProps {
   theme: string;
   allInvoices: Invoice[];
   name: string;
-  quantity: number;
+  quantity: number | string;
   price: number | string;
   total: number;
   setState: (newState: Partial<IContextProps>) => void;

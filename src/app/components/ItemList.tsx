@@ -9,12 +9,17 @@ function ItemList() {
   const { name, quantity, price, total, setState } = useContext(Context)!;
 
   useEffect(() => {
-    setState({ total: quantity * +price });
+    setState({ total: +quantity * +price });
   }, [quantity, price]);
 
   const handlePriceChange = (value: string) => {
     if (price === "0") return setState({ price: "" });
     setState({ price: value });
+  };
+
+  const handleQuantityChange = (value: string) => {
+    if (quantity === "0") return setState({ quantity: "" });
+    setState({ quantity: value });
   };
   return (
     <div>
@@ -31,7 +36,7 @@ function ItemList() {
           style={"flex-[3_1_0%]"}
           type={"number"}
           value={quantity}
-          onChange={(e) => setState({ quantity: +e.target.value })}
+          onChange={(e) => handleQuantityChange(e.target.value)}
         />
         <InputField
           labelName={"Price"}
