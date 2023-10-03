@@ -3,11 +3,10 @@
 import React, { useContext } from "react";
 import InputField from "@/app/components/InputField";
 import { Context } from "@/app/context/Context";
+import { formatNumber } from "@/app/utils/formatNumber";
 
 function ItemList() {
   const { name, quantity, price, total, setState } = useContext(Context)!;
-
-  console.log(name, quantity, price);
 
   return (
     <div>
@@ -36,7 +35,9 @@ function ItemList() {
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">
             Total
           </p>
-          <p className="font-bold dark:text-white mt-[1.25rem]">${total}</p>
+          <p className="font-bold dark:text-white mt-[1.25rem]">
+            ${formatNumber(total)}
+          </p>
         </div>
         <div className="pt-3 mt-auto mb-auto justify-self-end">
           <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
