@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       screens: {
         xs: "500px",
+        desktop: "950px",
       },
       colors: {
         themeColor: "rgb(30,33,57)",

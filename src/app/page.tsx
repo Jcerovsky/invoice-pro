@@ -5,7 +5,6 @@ import NewInvoice from "@/app/components/NewInvoice";
 export default function Home() {
   return (
     <>
-      <Navbar />
       <NewInvoice />
     </>
   );

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
 import ContextProvider from "@/app/context/Context";
 import React from "react";
+import Navbar from "@/app/components/Navbar";
 
 const league_spartan = League_Spartan({
   weight: ["300", "500", "700", "900"],
@@ -23,7 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${league_spartan.className} dark:bg-themeColorBg`}>
-        <ContextProvider>{children}</ContextProvider>
+        <ContextProvider>
+          <Navbar />
+
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );
