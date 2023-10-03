@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from "react";
 import InputField from "@/app/components/InputField";
-import Image from "next/image";
 
 function ItemList() {
   const [totalSum, setTotalSum] = useState<number>(0);
@@ -12,13 +11,26 @@ function ItemList() {
   return (
     <div>
       <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
-      <InputField labelName={"Item Name"} />
-      <div className="grid grid-cols-4 gap-x-6">
-        <InputField labelName={"Qty."} placeholder={"1"} />
-        <InputField labelName={"Price"} placeholder={"0"} />
-        <div className="flex flex-col">
-          <p className="text-mediumPurple">Total</p>
-          <p className="font-bold mt-auto mb-auto">${totalSum}</p>
+      <div className="flex flex-wrap items-center mb-6 gap-3 ">
+        <InputField
+          labelName={"Item Name"}
+          style="max-xs:basis-full flex-[12_1_0%]"
+        />
+        <InputField
+          labelName={"Qty."}
+          placeholder={"1"}
+          style={"flex-[3_1_0%]"}
+        />
+        <InputField
+          labelName={"Price"}
+          placeholder={"0"}
+          style={"flex-[3_1_0%]"}
+        />
+        <div className="relative flex-[3_1_0%]">
+          <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">
+            Total
+          </p>
+          <p className="font-bold dark:text-white mt-[1.25rem]">${totalSum}</p>
         </div>
         <div className="pt-3 mt-auto mb-auto justify-self-end">
           <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
