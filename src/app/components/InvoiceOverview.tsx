@@ -29,7 +29,11 @@ function InvoiceOverview() {
         <h1 className="text-2xl sm:text-5xl font-bold">Invoices</h1>
         <p>Total of 7 Invoices</p>
       </div>
-      <div className="flex items-center ml-auto mr-4 cursor-pointer relative">
+
+      <div
+        className="flex items-center ml-auto mr-4 cursor-pointer relative"
+        ref={filterDivRef}
+      >
         <p
           className="font-medium"
           onClick={() => setIsFilterMenuShown((prevState) => !prevState)}
@@ -44,12 +48,11 @@ function InvoiceOverview() {
         />
         {isFilterMenuShown && (
           <div
-            className={`absolute w-[12rem] rounded-md p-6 left-0 shadow-xl bg-white z-20 top-[3.125rem] ${
+            className={`absolute w-[12rem] rounded-md p-6 left-0 shadow-2xl bg-white z-20 top-[3.125rem] dark:bg-themeColor ${
               screenSize === "small"
                 ? " -translate-x-1/3"
                 : " -translate-x-[15%]"
             }`}
-            ref={filterDivRef}
           >
             <CustomCheckbox status={"Draft"} />
             <CustomCheckbox status={"Pending"} />
