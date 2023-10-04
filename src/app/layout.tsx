@@ -6,7 +6,7 @@ import React from "react";
 import Navbar from "@/app/components/Navbar";
 
 const league_spartan = League_Spartan({
-  weight: ["300", "500", "700", "900"],
+  weight: ["300", "400", "500", "700", "900"],
   subsets: ["latin"],
 });
 
