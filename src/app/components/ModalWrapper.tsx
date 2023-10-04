@@ -1,3 +1,11 @@
+import { ReactNode } from "react";
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children?: ReactNode;
+}
+
 const ModalWrapper = ({ isOpen, onClose, children }: ModalProps) => {
   return (
     <div

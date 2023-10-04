@@ -1,18 +1,22 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "@/app/context/Context";
 import NewInvoice from "@/app/components/NewInvoice";
 
 function Navbar() {
   const { theme, setState } = useContext(Context)!;
 
+  const themeIconSource =
+    theme === "light" ? "/assets/icon-moon.svg" : "/assets/icon-sun.svg";
+
   useEffect(() => {
     if (theme === "light") {
-      document.documentElement.classList.add("dark");
-    } else {
       document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
     }
+
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", JSON.stringify(theme));
     }
@@ -34,10 +38,10 @@ function Navbar() {
         />
       </div>
       <img
-        src={`/assets/icon-${theme === "light" ? "moon" : "sun"}.svg`}
+        src={themeIconSource}
         alt={`theme-logo`}
         className="hover:text-white duration-300 cursor-pointer self-center ml-auto px-6 desktop:ml-0 desktop:mt-auto
-        desktop:py-7"
+        desktop:py-7 "
         onClick={() =>
           setState({ theme: theme === "light" ? "dark" : "light" })
         }

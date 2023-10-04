@@ -49,17 +49,23 @@ interface IContextProps {
 
 export const Context = createContext<IContextProps | null>(null);
 
-const getLocalStorageItem = (key: string, defaultValue: any) => {
+const getLocalStorageItem = (key: string) => {
   if (typeof window !== "undefined") {
+    const prefersDarkMode = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
+    if (!item) {
+      localStorage.setItem("theme", prefersDarkMode ? "dark" : "light");
+      return prefersDarkMode ? "dark" : "light";
+    }
+    return item && JSON.parse(item);
   }
-  return defaultValue;
 };
 
 function ContextProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useObjectState<IContextProps>({
-    theme: getLocalStorageItem("theme", "dark"),
+    theme: getLocalStorageItem("theme"),
     setState: () => {},
     allInvoices: data,
     name: "",
