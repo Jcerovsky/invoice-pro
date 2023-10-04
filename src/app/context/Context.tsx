@@ -5,7 +5,7 @@ import { useObjectState } from "@/app/hooks/useObjectState";
 import theme from "tailwindcss/defaultTheme";
 import data from "../data/data.json";
 
-interface Invoice {
+export interface IInvoice {
   id: string;
   createdAt: string;
   paymentDue: string;
@@ -37,7 +37,7 @@ interface Invoice {
 
 interface IContextProps {
   theme: string;
-  allInvoices: Invoice[];
+  allInvoices: IInvoice[];
   name: string;
   quantity: number | string;
   price: number | string;
