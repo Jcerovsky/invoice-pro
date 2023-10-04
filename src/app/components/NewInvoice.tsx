@@ -16,7 +16,7 @@ function NewInvoice({
 }) {
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen}>
-      <form className="dark:bg-themeColorBg sm:rounded-r-xl p-6 xs:p-16 max-w-[38.75rem] fixed left-0 top-[5rem]">
+      <form className="dark:bg-themeColorBg sm:rounded-r-xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
         <div className="sm:hidden flex items-center gap-5 mb-6">
           <Image
             width={10}
