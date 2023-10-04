@@ -2,7 +2,24 @@ import React from "react";
 import { IInvoice } from "@/app/context/Context";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
-  return <div></div>;
+  return (
+    <div
+      className="flex items-center max-w-[45.625rem] cursor-pointer dark:text-white rounded-xl mb-4
+  justify-between bg-white dark:bg-themeColor p-7"
+    >
+      <div>
+        <p className="mb-5 font-semibold">
+          <span className="text-mediumPurple">#</span>
+          {invoiceData.id}
+        </p>
+        <p className="mb-5 text-mediumPurple">Due {invoiceData.paymentDue}</p>
+        <p className="mb-5 font-bold text-xl ">$ {invoiceData.total}</p>
+      </div>
+      <div>
+        <p className="text-gray-500">{invoiceData.clientName}</p>
+      </div>
+    </div>
+  );
 }
 
 export default Invoice;
