@@ -1,12 +1,27 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "@/app/context/Context";
 import CustomCheckbox from "@/app/components/CustomCheckbox";
+import { handleClickOutside } from "@/app/utils/handleClickOutside";
 
 function InvoiceOverview() {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
   const { screenSize } = useContext(Context)!;
+  const filterDivRef = useRef(null);
+
+  useEffect(() => {
+    if (isFilterMenuShown) {
+      const handleMouseDown = (event: MouseEvent) => {
+        handleClickOutside(event, filterDivRef, setIsFilterMenuShown);
+      };
+      document.addEventListener("mousedown", handleMouseDown);
+
+      return () => {
+        document.removeEventListener("mousedown", handleMouseDown);
+      };
+    }
+  }, [isFilterMenuShown]);
 
   return (
     <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4">
@@ -34,6 +49,7 @@ function InvoiceOverview() {
                 ? " -translate-x-1/3"
                 : " -translate-x-[15%]"
             }`}
+            ref={filterDivRef}
           >
             <CustomCheckbox status={"Draft"} />
             <CustomCheckbox status={"Pending"} />
