@@ -8,10 +8,10 @@ function InvoiceOverview() {
   const { screenSize } = useContext(Context)!;
 
   return (
-    <div className="flex mt-[7.5rem] mb-8 items-center gap-4">
+    <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4">
       <div>
-        <h1 className="text-2xl sm:text-4xl font-bold">Invoices</h1>
-        <p>Total Invoices: 7</p>
+        <h1 className="text-2xl sm:text-5xl font-bold">Invoices</h1>
+        <p>Total of 7 Invoices</p>
       </div>
       <div
         className="flex items-center ml-auto mr-4 cursor-pointer"
@@ -31,7 +31,7 @@ function InvoiceOverview() {
         <div className="bg-white w-8 h-8 rounded-full text-center flex mr-auto">
           <img src="/assets/icon-plus.svg" alt="add" className="m-auto" />
         </div>
-        <p>New</p>
+        <p>{screenSize === "small" ? "New" : "New Invoice"}</p>
       </button>
     </div>
   );
