@@ -43,6 +43,7 @@ interface IContextProps {
   price: number | string;
   total: number;
   screenSize: string;
+  checkboxState: { paid: boolean; draft: boolean; pending: boolean };
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -66,6 +67,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
     price: "",
     total: 0,
     screenSize: "",
+    checkboxState: { paid: false, draft: false, pending: false },
   });
 
   useEffect(() => {
@@ -81,7 +83,6 @@ function ContextProvider({ children }: { children: ReactNode }) {
       };
       handleResize();
       window.addEventListener("resize", handleResize);
-      console.log("run");
 
       return () => window.removeEventListener("resize", handleResize);
     }
@@ -98,6 +99,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         price: state.price,
         total: state.total,
         screenSize: state.screenSize,
+        checkboxState: state.checkboxState,
       }}
     >
       {children}

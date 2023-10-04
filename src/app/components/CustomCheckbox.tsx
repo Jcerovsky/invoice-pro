@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-function CustomCheckbox({ status }: { status: string }) {
-  const [checked, setChecked] = useState<boolean>(false);
-  const handleCheck = () => {
-    setChecked((prevState) => !prevState);
-  };
+interface ICheckbox {
+  status: string;
+  checked: boolean;
+  handleCheck: () => void;
+}
+
+function CustomCheckbox({ status, checked, handleCheck }: ICheckbox) {
   return (
-    <div className="mb-1">
+    <div className="mb-1 " key={crypto.randomUUID()}>
       <div className="flex gap-3">
         <label className="flex items-center gap-3 cursor-pointer">
           <input

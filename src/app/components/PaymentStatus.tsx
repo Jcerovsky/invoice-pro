@@ -23,8 +23,6 @@ function PaymentStatus({ status }: { status: string }) {
       ? "bg-mediumPurple"
       : "bg-orange-400";
 
-  console.log(status);
-
   return (
     <div
       className={`pl-3 h-[2.5rem] w-[6.5rem] flex items-center rounded-md ${statusBgColor}`}

@@ -7,7 +7,8 @@ import { handleClickOutside } from "@/app/utils/handleClickOutside";
 
 function InvoiceOverview() {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
-  const { screenSize } = useContext(Context)!;
+
+  const { screenSize, checkboxState, setState } = useContext(Context)!;
   const filterDivRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,8 @@ function InvoiceOverview() {
       };
     }
   }, [isFilterMenuShown]);
+
+  console.log("sss", checkboxState);
 
   return (
     <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4">
@@ -54,9 +57,42 @@ function InvoiceOverview() {
                 : " -translate-x-[15%]"
             }`}
           >
-            <CustomCheckbox status={"Draft"} />
-            <CustomCheckbox status={"Pending"} />
-            <CustomCheckbox status={"Paid"} />
+            <CustomCheckbox
+              status={"Draft"}
+              checked={checkboxState["draft"]}
+              handleCheck={() =>
+                setState({
+                  checkboxState: {
+                    ...checkboxState,
+                    draft: !checkboxState.draft,
+                  },
+                })
+              }
+            />
+            <CustomCheckbox
+              status={"Pending"}
+              checked={checkboxState["pending"]}
+              handleCheck={() =>
+                setState({
+                  checkboxState: {
+                    ...checkboxState,
+                    pending: !checkboxState.pending,
+                  },
+                })
+              }
+            />
+            <CustomCheckbox
+              status={"Paid"}
+              checked={checkboxState["paid"]}
+              handleCheck={() =>
+                setState({
+                  checkboxState: {
+                    ...checkboxState,
+                    paid: !checkboxState.paid,
+                  },
+                })
+              }
+            />
           </div>
         )}
       </div>
