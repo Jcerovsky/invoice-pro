@@ -2,6 +2,7 @@
 
 import React, { useContext, useState } from "react";
 import { Context } from "@/app/context/Context";
+import CustomCheckbox from "@/app/components/CustomCheckbox";
 
 function InvoiceOverview() {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
@@ -13,16 +14,32 @@ function InvoiceOverview() {
         <h1 className="text-2xl sm:text-5xl font-bold">Invoices</h1>
         <p>Total of 7 Invoices</p>
       </div>
-      <div
-        className="flex items-center ml-auto mr-4 cursor-pointer"
-        onClick={() => setIsFilterMenuShown((prevState) => !prevState)}
-      >
-        <p>{screenSize === "small" ? "Filter" : "Filter by status"}</p>
+      <div className="flex items-center ml-auto mr-4 cursor-pointer relative">
+        <p
+          className="font-medium"
+          onClick={() => setIsFilterMenuShown((prevState) => !prevState)}
+        >
+          {screenSize === "small" ? "Filter" : "Filter by status"}
+        </p>
         <img
           src={"/assets/icon-arrow-down.svg"}
           alt="arrow-img"
           className={`${isFilterMenuShown && "rotate-180 "} duration-300 ml-2`}
+          onClick={() => setIsFilterMenuShown((prevState) => !prevState)}
         />
+        {isFilterMenuShown && (
+          <div
+            className={`absolute w-[12rem] rounded-md p-6 left-0 shadow-xl bg-white z-20 top-[3.125rem] ${
+              screenSize === "small"
+                ? " -translate-x-1/3"
+                : " -translate-x-[15%]"
+            }`}
+          >
+            <CustomCheckbox status={"Draft"} />
+            <CustomCheckbox status={"Pending"} />
+            <CustomCheckbox status={"Paid"} />
+          </div>
+        )}
       </div>
       <button
         className="cursor-pointer duration-300 rounded-full h-[3rem] bg-buttonPurple hover:bg-violet-400 flex
