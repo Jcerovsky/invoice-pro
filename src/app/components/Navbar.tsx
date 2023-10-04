@@ -7,9 +7,6 @@ import NewInvoice from "@/app/components/NewInvoice";
 function Navbar() {
   const { theme, setState } = useContext(Context)!;
 
-  const themeIconSource =
-    theme === "light" ? "/assets/icon-moon.svg" : "/assets/icon-sun.svg";
-
   useEffect(() => {
     if (theme === "light") {
       document.documentElement.classList.remove("dark");
@@ -38,7 +35,7 @@ function Navbar() {
         />
       </div>
       <img
-        src={themeIconSource}
+        src={`/assets/icon-${theme === "light" ? "moon" : "sun"}.svg`}
         alt={`theme-logo`}
         className="hover:text-white duration-300 cursor-pointer self-center ml-auto px-6 desktop:ml-0 desktop:mt-auto
         desktop:py-7 "
