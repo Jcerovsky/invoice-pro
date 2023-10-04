@@ -3,9 +3,8 @@ import InvoiceOverview from "@/app/components/InvoiceOverview";
 
 export default function Home() {
   return (
-    <>
-      <div className="mt-14 mb-8 px-4"></div>
+    <div className="max-w-[47.5rem] ml-auto mr-auto mt-[4.5rem] pb-[4rem] px-4 dark:text-white">
       <InvoiceOverview />
-    </>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, ReactNode, useEffect } from "react";
 import { useObjectState } from "@/app/hooks/useObjectState";
 import theme from "tailwindcss/defaultTheme";
 import data from "../data/data.json";
@@ -42,6 +42,7 @@ interface IContextProps {
   quantity: number | string;
   price: number | string;
   total: number;
+  screenSize: string;
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -64,7 +65,27 @@ function ContextProvider({ children }: { children: ReactNode }) {
     quantity: 1,
     price: "",
     total: 0,
+    screenSize: "",
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        const screen =
+          window.innerWidth < 600
+            ? "small"
+            : window.innerWidth < 950
+            ? "medium"
+            : "large";
+        setState({ screenSize: screen });
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      console.log("run");
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, [state.screenSize]);
 
   return (
     <Context.Provider
@@ -76,6 +97,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         quantity: state.quantity,
         price: state.price,
         total: state.total,
+        screenSize: state.screenSize,
       }}
     >
       {children}

@@ -1,22 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
-import Button from "@/app/components/Button";
+import React, { useContext, useState } from "react";
+import { Context } from "@/app/context/Context";
 
 function InvoiceOverview() {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
+  const { screenSize } = useContext(Context)!;
 
   return (
-    <div className="flex mt-14 mb-8 px-4 items-center gap-4">
+    <div className="flex mt-[7.5rem] mb-8 items-center gap-4">
       <div>
         <h1 className="text-2xl sm:text-4xl font-bold">Invoices</h1>
-        <p>7 Invoices</p>
+        <p>Total Invoices: 7</p>
       </div>
       <div
-        className="flex items-center ml-auto cursor-pointer"
+        className="flex items-center ml-auto mr-4 cursor-pointer"
         onClick={() => setIsFilterMenuShown((prevState) => !prevState)}
       >
-        <p>Filter</p>
+        <p>{screenSize === "small" ? "Filter" : "Filter by status"}</p>
         <img
           src={"/assets/icon-arrow-down.svg"}
           alt="arrow-img"
