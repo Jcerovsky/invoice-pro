@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${league_spartan.className} bg-slate-50 dark:bg-themeColorBg dark:text-white"`}
+        className={`${league_spartan.className} box-border bg-slate-50 dark:bg-themeColorBg dark:text-white"`}
       >
         <ContextProvider>
           <Navbar />

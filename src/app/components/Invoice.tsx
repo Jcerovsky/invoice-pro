@@ -6,7 +6,8 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   return (
     <div
       className="flex items-center max-w-[45.625rem] cursor-pointer dark:text-white rounded-xl mb-4
-  justify-between bg-white dark:bg-themeColor p-7"
+  justify-between bg-white dark:bg-themeColor p-6 border-transparent border hover:border-heavyPurple shadow-xl
+  transition"
     >
       <div>
         <p className="mb-5 font-semibold">

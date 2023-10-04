@@ -74,7 +74,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         const screen =
           window.innerWidth < 600
             ? "small"
-            : window.innerWidth < 950
+            : window.innerWidth < 720
             ? "medium"
             : "large";
         setState({ screenSize: screen });
