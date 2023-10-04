@@ -1,5 +1,6 @@
 import React from "react";
 import { IInvoice } from "@/app/context/Context";
+import PaymentStatus from "@/app/components/PaymentStatus";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   return (
@@ -15,8 +16,9 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
         <p className="mb-5 text-mediumPurple">Due {invoiceData.paymentDue}</p>
         <p className="mb-5 font-bold text-xl ">$ {invoiceData.total}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-center gap-9">
         <p className="text-gray-500">{invoiceData.clientName}</p>
+        <PaymentStatus status={invoiceData.status} />
       </div>
     </div>
   );
