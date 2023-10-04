@@ -18,6 +18,7 @@ const config: Config = {
         heavyPurple: "rgba(124, 93, 250, 1)",
         mediumPurple: "rgba(126, 136, 195, 1)",
         lightPurple: "rgba(223, 227, 250, 1)",
+        buttonPurple: "rgba(124, 93, 250, 1)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

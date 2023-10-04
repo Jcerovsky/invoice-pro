@@ -74,27 +74,29 @@ function NewInvoice() {
       </div>
       <Button
         style={
-          "bg-purple-50 hover:bg-blue-100 text-mediumPurple mb-[2.875rem] dark:bg-[rgba(124,_93,_250,_1)] dark:text-gray-300 dark:hover:bg-purple-500"
+          "bg-purple-50 hover:bg-blue-100 text-mediumPurple mb-[2.875rem] dark:bg-buttonPurple dark:text-gray-300 dark:hover:bg-purple-500"
         }
-        text={"+ Add New Item"}
-      />
+      >
+        + Add New Item
+      </Button>
       <div className="grid grid-cols-3 gap-2">
         <Button
           style={
             "bg-purple-50 hover:bg-blue-100 text-mediumPurple max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
           }
-          text={"Discard"}
-        />
+        >
+          Discard
+        </Button>
         <Button
           style={
             "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200"
           }
-          text={"Save as Draft"}
-        />
-        <Button
-          style={"bg-[rgba(124,_93,_250,_1)] hover:bg-purple-500 text-white"}
-          text={"Save & Send"}
-        />
+        >
+          Save as Draft
+        </Button>
+        <Button style={"bg-buttonPurple hover:bg-purple-500 text-white"}>
+          Save & Send
+        </Button>
       </div>
     </form>
   );

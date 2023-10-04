@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "@/app/components/Navbar";
-import NewInvoice from "@/app/components/NewInvoice";
+import InvoiceOverview from "@/app/components/InvoiceOverview";
 
 export default function Home() {
   return (
     <>
-      <NewInvoice />
+      <div className="mt-14 mb-8 px-4"></div>
+      <InvoiceOverview />
     </>
   );
 }

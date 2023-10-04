@@ -23,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${league_spartan.className} dark:bg-themeColorBg`}>
+      <body
+        className={`${league_spartan.className} dark:bg-themeColorBg dark:text-white`}
+      >
         <ContextProvider>
           <Navbar />
 
