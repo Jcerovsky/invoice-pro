@@ -6,6 +6,7 @@ import Image from "next/image";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
 import ModalWrapper from "@/app/components/ModalWrapper";
+import GoBack from "@/app/components/GoBack";
 
 function NewInvoice({
   isOpen,
@@ -17,17 +18,7 @@ function NewInvoice({
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen}>
       <form className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
-        <div className="sm:hidden flex items-center gap-5 mb-6">
-          <Image
-            width={10}
-            height={14}
-            src="/assets/icon-arrow-left.svg"
-            alt="arrow-left-icon"
-          />
-          <span className="dark:text-white font-bold self-center mt-[0.125rem]">
-            Go Back
-          </span>
-        </div>
+        <GoBack />
         <h1 className="dark:text-white text-3xl font-bold mb-[3rem]">
           New Invoice
         </h1>

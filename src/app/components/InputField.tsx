@@ -33,8 +33,8 @@ function InputField({
       <input
         type={type}
         id={`${labelName}-${id}`}
-        className="border border-lightPurple dark:border-[rgba(37,_41,_69,_1)] dark:text-gray-200 rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
-        px-4"
+        className="border border-lightPurple dark:border-[rgba(37,_41,_69,_1)] dark:text-gray-200 rounded-md py-4 h-[3rem]
+         w-full dark:bg-themeColor hover:border-heavyPurple dark:hover:border-heavyPurple px-4"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
