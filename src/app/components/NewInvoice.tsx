@@ -16,7 +16,7 @@ function NewInvoice({
 }) {
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen}>
-      <form className="dark:bg-themeColorBg sm:rounded-r-xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
+      <form className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
         <div className="sm:hidden flex items-center gap-5 mb-6">
           <Image
             width={10}
@@ -67,7 +67,7 @@ function NewInvoice({
             </div>
           </div>
           <div>
-            <p className="mb-3 text-mediumPurple font-medium">Payment Terms</p>
+            <p className="mb-3 text-mediumPurple font-light">Payment Terms</p>
             <div
               className="border border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
         px-4 "

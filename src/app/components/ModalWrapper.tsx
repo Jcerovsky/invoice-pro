@@ -17,7 +17,7 @@ const ModalWrapper = ({ isOpen, onClose, children }: ModalProps) => {
       <div
         className={`fixed transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } rounded-xl z-10 overflow-y-scroll top-[5rem] left-0 max-h-[88vh]`}
+        } z-10 overflow-y-scroll top-[5rem] left-0 max-h-[88vh]`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
