@@ -1,7 +1,7 @@
 import React from "react";
 import { capitaliseFirstLetter } from "@/app/utils/capitaliseFirstLetter";
 
-function PaymentStatus({ status }: { status: string }) {
+function PaymentStatus({ status, style }: { status: string; style?: string }) {
   const statusBgColor =
     status === "paid"
       ? "bg-green-100"
@@ -11,10 +11,10 @@ function PaymentStatus({ status }: { status: string }) {
 
   const statusTextColor =
     status === "paid"
-      ? "green-400"
+      ? "text-green-500"
       : status === "draft"
       ? "mediumPurple"
-      : "orange-400";
+      : "text-orange-500";
 
   const statusCircleColor =
     status === "paid"
@@ -25,14 +25,14 @@ function PaymentStatus({ status }: { status: string }) {
 
   return (
     <div
-      className={`pl-3 h-[2.5rem] w-[6.5rem] flex items-center rounded-md ${statusBgColor}`}
+      className={`pl-3 h-[2.5rem] w-[6.5rem] flex items-center rounded-md ${statusBgColor} ${style}`}
     >
       <span
         className={`w-2 h-2 rounded-full mr-2 ${
           status === "paid" || status === "draft" ? "ml-3" : ""
         } ${statusCircleColor}`}
       />
-      <p className={`text-${statusTextColor} mt-1`}>
+      <p className={`${statusTextColor} mt-1`}>
         {capitaliseFirstLetter(status)}
       </p>
     </div>

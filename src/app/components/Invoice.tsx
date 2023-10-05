@@ -14,76 +14,81 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   const router = useRouter();
   return (
     <>
-      <div
-        className={`flex items-center max-w-[45.625rem] cursor-pointer dark:text-white rounded-xl mb-4
-          justify-between bg-white dark:bg-themeColor p-6 border-transparent border hover:border-heavyPurple shadow-xl
-          transition ${screenSize === "large" && "py-4 pl-8 pr-6"}`}
-        onClick={() => router.push(`/invoice/${invoiceData.id}`)}
-      >
-        <div className={`${screenSize === "large" && "flex gap-[2.5rem]"} `}>
-          <p className="mb-2 font-semibold  ">
-            <span className="text-mediumPurple">#</span>
-            {invoiceData.id}
-          </p>
-          <p className="mb-2 text-mediumPurple dark:text-gray-300">
-            Due {invoiceData.paymentDue}
-          </p>
-          <p
-            className={` font-bold text-xl ${
-              screenSize === "large" && "hidden"
-            }`}
-          >
-            $ {invoiceData.total}
-          </p>
-          <p
-            className={`text-mediumPurple text-sm font-normal dark:text-gray-300 ${
-              screenSize !== "large" && "hidden"
-            }`}
-          >
-            {invoiceData.clientName}
-          </p>
-        </div>
-        <div
-          className={`flex items-center gap-6 ${
-            screenSize === "large" ? "flex-row gap-[2.5rem]" : "flex-col"
-          }`}
-        >
-          <p
-            className={`text-mediumPurple text-sm font-normal dark:text-gray-300 ${
-              screenSize === "large" && "hidden"
-            }`}
-          >
-            {invoiceData.clientName}
-          </p>
-          <p
-            className={` font-bold text-xl ${
-              screenSize !== "large" && "hidden"
-            }`}
-          >
-            $ {invoiceData.total}
-          </p>
-          <PaymentStatus status={invoiceData.status} />
-        </div>
-      </div>
+      {/*<div*/}
+      {/*  className={`flex items-center max-w-[45.625rem] cursor-pointer dark:text-white rounded-xl mb-4*/}
+      {/*    justify-between bg-white dark:bg-themeColor p-6 border-transparent border hover:border-heavyPurple shadow-xl*/}
+      {/*    transition ${screenSize === "large" && "py-4 pl-8 pr-6"}`}*/}
+      {/*  onClick={() => router.push(`/invoice/${invoiceData.id}`)}*/}
+      {/*>*/}
+      {/*  <div className={`${screenSize === "large" && "flex gap-[2.5rem]"} `}>*/}
+      {/*    <p className="mb-2 font-semibold  ">*/}
+      {/*      <span className="text-mediumPurple">#</span>*/}
+      {/*      {invoiceData.id}*/}
+      {/*    </p>*/}
+      {/*    <p className="mb-2 text-mediumPurple dark:text-gray-300">*/}
+      {/*      Due {invoiceData.paymentDue}*/}
+      {/*    </p>*/}
+      {/*    <p*/}
+      {/*      className={` font-bold text-xl ${*/}
+      {/*        screenSize === "large" && "hidden"*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      $ {invoiceData.total}*/}
+      {/*    </p>*/}
+      {/*    <p*/}
+      {/*      className={`text-mediumPurple text-sm font-normal dark:text-gray-300 ${*/}
+      {/*        screenSize !== "large" && "hidden"*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      {invoiceData.clientName}*/}
+      {/*    </p>*/}
+      {/*  </div>*/}
+      {/*  <div*/}
+      {/*    className={`flex items-center gap-6 ${*/}
+      {/*      screenSize === "large" ? "flex-row gap-[2.5rem]" : "flex-col"*/}
+      {/*    }`}*/}
+      {/*  >*/}
+      {/*    <p*/}
+      {/*      className={`text-mediumPurple text-sm font-normal dark:text-gray-300 ${*/}
+      {/*        screenSize === "large" && "hidden"*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      {invoiceData.clientName}*/}
+      {/*    </p>*/}
+      {/*    <p*/}
+      {/*      className={` font-bold text-xl ${*/}
+      {/*        screenSize !== "large" && "hidden"*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      $ {invoiceData.total}*/}
+      {/*    </p>*/}
+      {/*    <PaymentStatus status={invoiceData.status} />*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       <div>
         <GoBack />
-        <div className={`${screenSize !== "small" && "justify-between"} mb-6`}>
-          <div className="flex items-center justify-between ">
-            <p className="dark:text-gray-500 py-6 px-8 rounded-md">Status</p>
-            <PaymentStatus status={invoiceData.status} />
-          </div>
-          <div className={`${screenSize === "small" && "hidden"} `}>
+        <div
+          className={`mb-6 rounded-md bg-white dark:bg-themeColor flex items-center py-6 px-8 justify-between ${
+            screenSize !== "small" && ""
+          }`}
+        >
+          <p className="dark:text-gray-500">Status</p>
+          <PaymentStatus
+            status={invoiceData.status}
+            style={screenSize !== "small" ? "mr-auto ml-5" : ""}
+          />
+          <div className={`${screenSize === "small" && "hidden"} flex gap-2`}>
             <button
-              className="px-6 py-4 cursor-pointer rounded-full bg:zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[rgb(37,_41,_69] dark:hover:bg-themeColorBg dark:text-white"
+              className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
+             dark:bg-[rgb(37,_41,_69)] dark:hover:bg-themeColorBg dark:text-white duration-200"
             >
               Edit
             </button>
-            <button className="px-6 py-4 cursor-pointer rounded-full bg:red-500 hover:bg-red-400 text-white">
+            <button className="px-6 py-2 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
               Delete
             </button>
             <button
-              className="px-6 py-4 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white"
+              className="px-6 py-2 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white duration-200"
               disabled={invoiceData.status === "paid"}
             >
               Mark as Paid
@@ -158,16 +163,16 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           }`}
         >
           <button
-            className="px-6 py-4 cursor-pointer rounded-full bg:zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[rgb(37,_41,_69] dark:hover:bg-themeColorBg dark:text-white"
+            className="px-6 py-4 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
+             dark:bg-[rgb(37,_41,_69)] dark:hover:bg-themeColorBg dark:text-white duration-200"
           >
             Edit
           </button>
-          <button className="px-6 py-4 cursor-pointer rounded-full bg:red-500 hover:bg-red-400 text-white">
+          <button className="px-6 py-4 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
             Delete
           </button>
           <button
-            className="px-6 py-4 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white"
+            className="px-6 py-4 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white duration-200"
             disabled={invoiceData.status === "paid"}
           >
             Mark as Paid
