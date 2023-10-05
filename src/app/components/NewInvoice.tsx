@@ -2,7 +2,6 @@
 
 import React from "react";
 import InputField from "@/app/components/InputField";
-import Image from "next/image";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
 import ModalWrapper from "@/app/components/ModalWrapper";
