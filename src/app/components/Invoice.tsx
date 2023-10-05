@@ -5,6 +5,7 @@ import { Context, IInvoice } from "@/app/context/Context";
 import PaymentStatus from "@/app/components/PaymentStatus";
 import { useRouter } from "next/navigation";
 import GoBack from "@/app/components/GoBack";
+import { formatNumber } from "@/app/utils/formatNumber";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   const { screenSize } = useContext(Context)!;
@@ -68,11 +69,11 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
       <div>
         <GoBack />
         <div
-          className={`mb-6 rounded-md bg-white dark:bg-themeColor flex items-center py-6 px-8 justify-between ${
+          className={`mb-6 rounded-lg bg-white dark:bg-themeColor flex items-center py-6 px-8 justify-between ${
             screenSize !== "small" && ""
           }`}
         >
-          <p className="dark:text-gray-500">Status</p>
+          <p className="dark:text-gray-300">Status</p>
           <PaymentStatus
             status={invoiceData.status}
             style={screenSize !== "small" ? "mr-auto ml-5" : ""}
@@ -80,7 +81,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           <div className={`${screenSize === "small" && "hidden"} flex gap-2`}>
             <button
               className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[rgb(37,_41,_69)] dark:hover:bg-themeColorBg dark:text-white duration-200"
+             dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
             >
               Edit
             </button>
@@ -95,35 +96,64 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
             </button>
           </div>
         </div>
-        <div className="rounded-md dark:bg-themeColor">
-          <div
-            className={`${screenSize !== "small" && "flex justify-between"}`}
-          >
-            <div>
-              <h2 className="text-2xl">{invoiceData.id}</h2>
-              <p>{invoiceData.description}</p>
+        <div
+          className={`rounded-lg dark:bg-themeColor ${
+            screenSize === "small" ? "p-6" : "p-12"
+          }  `}
+        >
+          <div>
+            <div
+              className={`flex mb-7 ${
+                screenSize === "small"
+                  ? "flex-col gap-7"
+                  : "flex-row justify-between"
+              }`}
+            >
+              <div>
+                <h2 className="text-xl font-semibold">
+                  <span className="text-mediumPurple dark:text-zinc-100">
+                    #
+                  </span>
+                  {invoiceData.id}
+                </h2>
+                <p className="text-mediumPurple dark:text-zinc-100">
+                  {invoiceData.description}
+                </p>
+              </div>
+              <div className="tracking-wider leading-4 text-mediumPurple dark:text-zinc-100">
+                <p>{invoiceData.senderAddress.street}</p>
+                <p>{invoiceData.senderAddress.city}</p>
+                <p>{invoiceData.senderAddress.postCode}</p>
+                <p>{invoiceData.senderAddress.country}</p>
+              </div>
             </div>
-            <div className="tracking-wider leading-5 ">
-              <p>{invoiceData.senderAddress.street}</p>
-              <p>{invoiceData.senderAddress.city}</p>
-              <p>{invoiceData.senderAddress.postCode}</p>
-              <p>{invoiceData.senderAddress.country}</p>
-            </div>
-            <div className="flex flex-wrap">
+            <div className="flex justify-between flex-wrap gap-4 ">
               <div>
                 <div className="mb-8">
-                  <p className="dark:text-gray-500">Invoice Date</p>
-                  <h2>{invoiceData.createdAt}</h2>
+                  <p className="text-mediumPurple dark:text-zinc-100 mb-2">
+                    Invoice Date
+                  </p>
+                  <h2 className="text-lg font-semibold">
+                    {invoiceData.createdAt}
+                  </h2>
                 </div>
                 <div>
-                  <p className="dark:text-gray-500">Payment Due</p>
-                  <h2>{invoiceData.paymentDue}</h2>
+                  <p className="text-mediumPurple dark:text-zinc-100 mb-2">
+                    Payment Due
+                  </p>
+                  <h2 className="text-lg font-semibold  ">
+                    {invoiceData.paymentDue}
+                  </h2>
                 </div>
               </div>
               <div>
-                <p className="dark:text-gray-500">Bill To</p>
-                <h2>{invoiceData.clientName}</h2>
-                <div className="tracking-wider leading-5 ">
+                <p className="text-mediumPurple dark:text-zinc-100 mb-2">
+                  Bill to
+                </p>
+                <h2 className="text-lg font-semibold mb-2">
+                  {invoiceData.clientName}
+                </h2>
+                <div className="tracking-wider leading-4 text-mediumPurple dark:text-zinc-100 ">
                   <p>{invoiceData.clientAddress.street}</p>
                   <p>{invoiceData.clientAddress.city}</p>
                   <p>{invoiceData.clientAddress.postCode}</p>
@@ -131,52 +161,59 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
                 </div>
               </div>
               <div className="mb-7">
-                <p className="dark:text-gray-500 mb-3">Sent to</p>
-                <h2>{invoiceData.clientEmail}</h2>
+                <p className="text-mediumPurple dark:text-gray-200 mb-7">
+                  Sent to
+                </p>
+                <h2 className="text-lg font-semibold">
+                  {invoiceData.clientEmail}
+                </h2>
               </div>
             </div>
           </div>
-        </div>
-        <table className="bg-lightPurple dark:bg-themeColor rounded-md px-8 pt-8 pb-2">
-          <tr>
-            <td className="mb-8 text-left">Item Name</td>
-            <td className="mb-8 text-right">QTY.</td>
-            <td className="mb-8 text-right">Price</td>
-            <td className="mb-8 text-right">Total</td>
-          </tr>
-          {invoiceData.items.map((item) => (
-            <tr key={invoiceData.id}>
-              <td className="mb-8 text-left">{item.name}</td>
-              <td className="mb-8 text-left">{item.quantity}</td>
-              <td className="mb-8 text-left">{item.price}</td>
-              <td className="mb-8 text-left">{item.total}</td>
-            </tr>
-          ))}
-        </table>
-        <div className="dark:bg-neutral-800 bg-neutral-500 rounded-b-md p-8 flex justify-between">
-          <p>Amount Due</p>
-          <h2 className="text-4xl">${totalSum}</h2>
-        </div>
-        <div
-          className={`fixed bottom-0 dark:bg-themeColor flex justify-center gap-8 px-6 py-5 ${
-            screenSize !== "small" && "hidden"
-          }`}
-        >
-          <button
-            className="px-6 py-4 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[rgb(37,_41,_69)] dark:hover:bg-themeColorBg dark:text-white duration-200"
+          <div className="bg-lightPurple dark:bg-[#252945] rounded-lg px-8 pt-8 pb-2 ">
+            <div className="flex items-center gap-6 ">
+              <p className="mb-8 text-left">Item Name</p>
+              <p className="mb-8 text-right ml-auto">QTY.</p>
+              <p className="mb-8 text-right">Price</p>
+              <p className="mb-8 text-right">Total</p>
+            </div>
+            {invoiceData.items.map((item) => (
+              <div
+                key={invoiceData.id}
+                className="flex items-center gap-3 font-semibold"
+              >
+                <p className="mb-8 text-left">{item.name}</p>
+                <p className="mb-8 text-left ml-auto">{item.quantity}</p>
+                <p className="mb-8 text-left">${formatNumber(item.price)}</p>
+                <p className="mb-8 text-left ">${formatNumber(item.total)}</p>
+              </div>
+            ))}
+          </div>
+          <div className="dark:bg-neutral-800 bg-neutral-500 rounded-b-md p-8 flex justify-between">
+            <p>Amount Due</p>
+            <h2 className="text-4xl">${formatNumber(totalSum)}</h2>
+          </div>
+          <div
+            className={`fixed bottom-0 dark:bg-themeColor w-full left-0 flex justify-center gap-8 px-6 py-5 ${
+              screenSize !== "small" && "hidden"
+            }`}
           >
-            Edit
-          </button>
-          <button className="px-6 py-4 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
-            Delete
-          </button>
-          <button
-            className="px-6 py-4 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white duration-200"
-            disabled={invoiceData.status === "paid"}
-          >
-            Mark as Paid
-          </button>
+            <button
+              className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
+             dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
+            >
+              Edit
+            </button>
+            <button className="px-6 py-2 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
+              Delete
+            </button>
+            <button
+              className="px-6 py-2 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white duration-200"
+              disabled={invoiceData.status === "paid"}
+            >
+              Mark as Paid
+            </button>
+          </div>
         </div>
       </div>
     </>

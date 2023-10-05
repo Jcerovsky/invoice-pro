@@ -27,7 +27,7 @@ function InvoiceOverview() {
   }, [isFilterMenuShown]);
 
   return (
-    <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4">
+    <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4 flex-wrap">
       <div>
         <h1 className="text-2xl sm:text-5xl font-bold">Invoices</h1>
         <p>Total of 7 Invoices</p>

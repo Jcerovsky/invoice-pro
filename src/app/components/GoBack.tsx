@@ -10,7 +10,7 @@ function GoBack() {
         src="/assets/icon-arrow-left.svg"
         alt="arrow-left-icon"
       />
-      <span className="dark:text-white font-bold self-center mt-[0.125rem]">
+      <span className="dark:text-white font-bold text-sm self-center mt-[0.125rem]">
         Go Back
       </span>
     </div>
