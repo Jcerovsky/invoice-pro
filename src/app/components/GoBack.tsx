@@ -1,9 +1,16 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function GoBack() {
+  const router = useRouter();
   return (
-    <div className="sm:hidden flex items-center gap-5 mb-6">
+    <div
+      className="sm:hidden flex items-center gap-5 mb-6 cursor-pointer"
+      onClick={() => router.push("/")}
+    >
       <Image
         width={10}
         height={14}
