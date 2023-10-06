@@ -97,7 +97,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           </div>
         </div>
         <div
-          className={`rounded-lg dark:bg-themeColor ${
+          className={`rounded-lg dark:bg-themeColor bg-white ${
             screenSize === "small" ? "p-6" : "p-12"
           }  `}
         >
@@ -141,7 +141,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
                   <p className="text-mediumPurple dark:text-zinc-100 mb-2">
                     Payment Due
                   </p>
-                  <h2 className="text-lg font-semibold  ">
+                  <h2 className="text-lg font-semibold mb-8 ">
                     {invoiceData.paymentDue}
                   </h2>
                 </div>
@@ -170,7 +170,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
               </div>
             </div>
           </div>
-          <div className="bg-lightPurple dark:bg-[#252945] rounded-lg px-8 pt-8 pb-2 ">
+          <div className="bg-lightPurple dark:bg-[#252945] rounded-t-lg px-8 pt-8 pb-2 ">
             <div className="flex items-center gap-6 ">
               <p className="mb-8 text-left">Item Name</p>
               <p className="mb-8 text-right ml-auto">QTY.</p>
@@ -189,26 +189,30 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
               </div>
             ))}
           </div>
-          <div className="dark:bg-neutral-800 bg-neutral-500 rounded-b-md p-8 flex justify-between">
+          <div
+            className={`dark:bg-neutral-800 bg-[#373B53] text-zinc-50 rounded-b-lg flex justify-between ${
+              screenSize === "small" ? "p-6" : "p-8"
+            }`}
+          >
             <p>Amount Due</p>
-            <h2 className="text-4xl">${formatNumber(totalSum)}</h2>
+            <h2 className="text-2xl">${formatNumber(totalSum)}</h2>
           </div>
           <div
-            className={`fixed bottom-0 dark:bg-themeColor w-full left-0 flex justify-center gap-8 px-6 py-5 ${
+            className={`fixed bottom-0 bg-white dark:bg-themeColor justify-center w-full left-0 flex gap-4 px-6 py-5 ${
               screenSize !== "small" && "hidden"
             }`}
           >
             <button
-              className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
+              className="px-6 py-2 cursor-pointer rounded-2xl bg-zinc-50 hover:bg-lightPurple text-mediumPurple
              dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
             >
               Edit
             </button>
-            <button className="px-6 py-2 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
+            <button className="px-6 py-2 cursor-pointer rounded-2xl bg-red-500 hover:bg-red-400 text-white duration-200">
               Delete
             </button>
             <button
-              className="px-6 py-2 cursor-pointer rounded-full bg-buttonPurple hover:bg-purple-500 text-white duration-200"
+              className="px-6 py-2 cursor-pointer rounded-2xl bg-buttonPurple hover:bg-purple-500 text-white duration-200"
               disabled={invoiceData.status === "paid"}
             >
               Mark as Paid
