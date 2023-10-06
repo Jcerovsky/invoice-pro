@@ -86,7 +86,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           />
           <div
             className={`${
-              screenSize === "small" || (screenSize === "xs" && "hidden")
+              (screenSize === "small" || screenSize === "xs") && "hidden"
             } flex gap-2`}
           >
             <button
