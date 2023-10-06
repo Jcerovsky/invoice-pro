@@ -43,6 +43,7 @@ interface IContextProps {
   price: number | string;
   total: number;
   screenSize: string;
+  isInvoiceModalOpen: boolean;
   checkboxState: { paid: boolean; draft: boolean; pending: boolean };
   setState: (newState: Partial<IContextProps>) => void;
 }
@@ -73,6 +74,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
     price: "",
     total: 0,
     screenSize: "",
+    isInvoiceModalOpen: false,
     checkboxState: { paid: false, draft: false, pending: false },
   });
 
@@ -108,6 +110,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         total: state.total,
         screenSize: state.screenSize,
         checkboxState: state.checkboxState,
+        isInvoiceModalOpen: state.isInvoiceModalOpen,
       }}
     >
       {children}

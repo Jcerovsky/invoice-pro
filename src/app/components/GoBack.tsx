@@ -1,15 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { Context } from "@/app/context/Context";
 
 function GoBack() {
-  const router = useRouter();
+  const { isInvoiceModalOpen, setState } = useContext(Context)!;
   return (
     <div
       className="sm:hidden flex items-center gap-5 mb-6 cursor-pointer"
-      onClick={() => router.push("/")}
+      onClick={() => setState({ isInvoiceModalOpen: false })}
     >
       <Image
         width={10}

@@ -5,7 +5,7 @@ import { Context } from "@/app/context/Context";
 import NewInvoice from "@/app/components/NewInvoice";
 
 function Navbar() {
-  const { theme, setState } = useContext(Context)!;
+  const { theme, setState, isInvoiceModalOpen } = useContext(Context)!;
 
   useEffect(() => {
     if (theme === "light") {

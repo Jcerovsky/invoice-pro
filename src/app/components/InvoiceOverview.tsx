@@ -8,9 +8,9 @@ import NewInvoice from "@/app/components/NewInvoice";
 
 function InvoiceOverview() {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
-  const [isInvoiceShown, setIsInvoiceShown] = useState<boolean>(false);
 
-  const { screenSize, checkboxState, setState } = useContext(Context)!;
+  const { screenSize, checkboxState, setState, isInvoiceModalOpen } =
+    useContext(Context)!;
   const filterDivRef = useRef(null);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ function InvoiceOverview() {
       <button
         className="cursor-pointer duration-300 rounded-full h-[3rem] bg-buttonPurple hover:bg-violet-400 flex
       items-center py-2 pl-2 pr-4 gap-3 text-white"
-        onClick={() => setIsInvoiceShown((prevState) => !prevState)}
+        onClick={() => setState({ isInvoiceModalOpen: !isInvoiceModalOpen })}
       >
         <div className="bg-white w-8 h-8 rounded-full text-center flex mr-auto">
           <img src="/assets/icon-plus.svg" alt="add" className="m-auto" />
@@ -105,8 +105,8 @@ function InvoiceOverview() {
         <p>{screenSize === "small" ? "New" : "New Invoice"}</p>
       </button>
       <NewInvoice
-        isOpen={isInvoiceShown}
-        onClose={() => setIsInvoiceShown(false)}
+        isOpen={isInvoiceModalOpen}
+        onClose={() => setState({ isInvoiceModalOpen: false })}
       />
     </div>
   );
