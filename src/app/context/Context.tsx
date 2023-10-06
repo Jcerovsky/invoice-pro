@@ -80,7 +80,9 @@ function ContextProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       const handleResize = () => {
         const screen =
-          window.innerWidth < 600
+          window.innerWidth < 400
+            ? "xs"
+            : window.innerWidth < 600
             ? "small"
             : window.innerWidth < 720
             ? "medium"

@@ -12,6 +12,8 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
 
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
 
+  const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
+
   const router = useRouter();
   return (
     <>
@@ -70,15 +72,23 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
         <GoBack />
         <div
           className={`mb-6 rounded-lg bg-white dark:bg-themeColor flex items-center py-6 px-8 justify-between ${
-            screenSize !== "small" && ""
+            screenSize !== "small" && screenSize !== "xs" && ""
           }`}
         >
           <p className="dark:text-gray-300">Status</p>
           <PaymentStatus
             status={invoiceData.status}
-            style={screenSize !== "small" ? "mr-auto ml-5" : ""}
+            style={
+              screenSize !== "small" && screenSize !== "xs"
+                ? "mr-auto ml-5"
+                : ""
+            }
           />
-          <div className={`${screenSize === "small" && "hidden"} flex gap-2`}>
+          <div
+            className={`${
+              screenSize === "small" || (screenSize === "xs" && "hidden")
+            } flex gap-2`}
+          >
             <button
               className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
              dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
@@ -104,7 +114,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           <div>
             <div
               className={`flex mb-7 ${
-                screenSize === "small"
+                screenSize === "small" || screenSize === "xs"
                   ? "flex-col gap-7"
                   : "flex-row justify-between"
               }`}
@@ -171,26 +181,54 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
             </div>
           </div>
           <div className="bg-lightPurple dark:bg-[#252945] rounded-t-lg px-8 pt-8 pb-2 ">
-            <div className="flex items-center gap-6 ">
+            <div className="flex items-center gap-6">
               <p className="mb-8 text-left">Item Name</p>
-              <p className="mb-8 text-right ml-auto">QTY.</p>
-              <p className="mb-8 text-right">Price</p>
-              <p className="mb-8 text-right">Total</p>
+              <p className={`mb-8 text-right ml-auto ${hideWhenScreenXs}`}>
+                QTY.
+              </p>
+              <p className={`mb-8 text-right  ${hideWhenScreenXs}`}>Price</p>
+              <p
+                className={`mb-8 text-right ${
+                  screenSize === "xs" ? "ml-auto" : "mr-7"
+                }`}
+              >
+                Total
+              </p>
             </div>
             {invoiceData.items.map((item) => (
               <div
                 key={invoiceData.id}
                 className="flex items-center gap-3 font-semibold"
               >
-                <p className="mb-8 text-left">{item.name}</p>
-                <p className="mb-8 text-left ml-auto">{item.quantity}</p>
-                <p className="mb-8 text-left">${formatNumber(item.price)}</p>
+                {screenSize === "xs" ? (
+                  <div>
+                    <p
+                      className={`${
+                        screenSize === "xs" ? "mb-2" : "mb-8"
+                      } text-lef`}
+                    >
+                      {item.name}
+                    </p>
+                    <p className="text-gray-500 ">
+                      {item.quantity} x ${formatNumber(item.price)}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="mb-8 text-left">{item.name}</p>
+                )}
+
+                <p className={`mb-8 text-left ml-auto ${hideWhenScreenXs}`}>
+                  {item.quantity}
+                </p>
+                <p className={`mb-8 text-left ${hideWhenScreenXs}`}>
+                  ${formatNumber(item.price)}
+                </p>
                 <p className="mb-8 text-left ">${formatNumber(item.total)}</p>
               </div>
             ))}
           </div>
           <div
-            className={`dark:bg-neutral-800 bg-[#373B53] text-zinc-50 rounded-b-lg flex justify-between ${
+            className={`dark:bg-neutral-800 bg-[#373B53] text-zinc-50 rounded-b-lg flex flex-wrap justify-between ${
               screenSize === "small" ? "p-6" : "p-8"
             }`}
           >
@@ -199,7 +237,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           </div>
           <div
             className={`fixed bottom-0 bg-white dark:bg-themeColor justify-center w-full left-0 flex gap-4 px-6 py-5 ${
-              screenSize !== "small" && "hidden"
+              screenSize !== "small" && screenSize !== "xs" && "hidden"
             }`}
           >
             <button
