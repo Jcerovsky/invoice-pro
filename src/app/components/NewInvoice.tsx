@@ -6,6 +6,8 @@ import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
 import ModalWrapper from "@/app/components/ModalWrapper";
 import GoBack from "@/app/components/GoBack";
+import PaymentTerms from "@/app/components/PaymentTerms";
+import { calculateDueDate } from "@/app/utils/calculateDueDate";
 
 function NewInvoice({
   isOpen,
@@ -14,6 +16,10 @@ function NewInvoice({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const handleSelect = (value: string) => {
+    console.log(calculateDueDate("2022-12-03", +value));
+  };
+
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen}>
       <form className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
@@ -22,7 +28,7 @@ function NewInvoice({
           New Invoice
         </h1>
         <div>
-          <p className="text-heavyPurple font-bold mb-6">Bill From</p>
+          <p className="text-heavyPurple font-bold mb-6">Bill from</p>
           <InputField labelName={"Street Address"} />
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-x-4 mb-[3rem]">
@@ -31,7 +37,7 @@ function NewInvoice({
           <InputField labelName={"Country"} />
         </div>
         <div>
-          <p className="text-heavyPurple font-bold mb-6">Bill To</p>
+          <p className="text-heavyPurple font-bold mb-6">Bill to</p>
           <InputField labelName={"Client's Name"} />
           <InputField labelName={"Client's Email"} />
           <InputField labelName={"Street Address"} id={"bill-to"} />
@@ -63,7 +69,7 @@ function NewInvoice({
         px-4 "
             >
               1 Day
-              {/*<PaymentTerms />*/}
+              <PaymentTerms handleSelect={handleSelect} />
             </div>
           </div>
         </div>
