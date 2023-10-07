@@ -6,6 +6,7 @@ import PaymentStatus from "@/app/components/PaymentStatus";
 import { useRouter } from "next/navigation";
 import GoBack from "@/app/components/GoBack";
 import { formatNumber } from "@/app/utils/formatNumber";
+import { formatDate } from "@/app/utils/formatDate";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   const { screenSize } = useContext(Context)!;
@@ -144,7 +145,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
                     Invoice Date
                   </p>
                   <h2 className="text-lg font-semibold">
-                    {invoiceData.createdAt}
+                    {formatDate(invoiceData.createdAt)}
                   </h2>
                 </div>
                 <div>
@@ -152,7 +153,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
                     Payment Due
                   </p>
                   <h2 className="text-lg font-semibold mb-8 ">
-                    {invoiceData.paymentDue}
+                    {formatDate(invoiceData.paymentDue)}
                   </h2>
                 </div>
               </div>
@@ -171,9 +172,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
                 </div>
               </div>
               <div className="mb-7">
-                <p className="text-mediumPurple dark:text-gray-200 mb-7">
-                  Sent to
-                </p>
+                <p className="text-mediumPurple dark:text-gray-200">Sent to</p>
                 <h2 className="text-lg font-semibold">
                   {invoiceData.clientEmail}
                 </h2>
