@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import InputField from "@/app/components/InputField";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
@@ -9,13 +9,14 @@ import GoBack from "@/app/components/GoBack";
 import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
 
-function NewInvoice({
-  isOpen,
-  onClose,
-}: {
+interface INewInvoiceProps {
   isOpen: boolean;
   onClose: () => void;
-}) {
+}
+
+function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
   const handleSelect = (value: string) => {
     console.log(calculateDueDate("2022-12-03", +value));
   };
@@ -62,14 +63,20 @@ function NewInvoice({
               <InputField labelName={"Invoice Date"} />
             </div>
           </div>
-          <div>
+          <div className="relative">
             <p className="mb-3 text-mediumPurple font-light">Payment Terms</p>
             <div
-              className="border border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
+              className="border flex justify-between border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
         px-4 "
+              onClick={() => setIsVisible((prevState) => !prevState)}
             >
-              1 Day
-              <PaymentTerms handleSelect={handleSelect} />
+              <span>Select</span>
+              <img
+                src={"/assets/icon-arrow-down.svg"}
+                alt="arrow-img"
+                className={`${isVisible && "rotate-180 "} duration-300 ml-2`}
+              />
+              <PaymentTerms handleSelect={handleSelect} isVisible={isVisible} />
             </div>
           </div>
         </div>
