@@ -30,6 +30,7 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
     clientPostCode: "",
     clientCountry: "",
     invoiceDate: "",
+    projectDescription: "",
   });
 
   const handleSelect = (value: string) => {
@@ -144,11 +145,11 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
               className="text-mediumPurple dark:text-white"
               htmlFor={"invoice-date"}
             />
-            <div className="relative flex items-center">
+            <div className="relative flex items-center ">
               <InputField
                 labelName={"Invoice Date"}
+                style={"w-full"}
                 type={"date"}
-                style={"placeholder-ml-6"}
                 name={"invoiceDate"}
                 onChange={handleInputChange}
                 value={formData.invoiceDate}
@@ -171,6 +172,14 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
               <PaymentTerms handleSelect={handleSelect} isVisible={isVisible} />
             </div>
           </div>
+        </div>
+        <div>
+          <InputField
+            labelName={"Project Description"}
+            name="projectDescription"
+            onChange={handleInputChange}
+            value={formData.projectDescription}
+          />
         </div>
         <div>
           <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
