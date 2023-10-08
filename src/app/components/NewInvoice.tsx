@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
@@ -10,15 +10,34 @@ import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
 import { useObjectState } from "@/app/hooks/useObjectState";
 
-interface INewInvoiceProps {
+interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
+interface IFormProps {
+  address: string;
+  city: string;
+  postCode: string;
+  country: string;
+  clientName: string;
+  clientEmail: string;
+  clientAddress: string;
+  clientCity: string;
+  clientPostCode: string;
+  clientCountry: string;
+  invoiceDate: string;
+  projectDescription: string;
+  itemName: string;
+  itemQuantity: string;
+  itemPrice: string;
+  itemTotal: number;
+}
+
+function NewInvoice({ isOpen, onClose }: IModalProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [paymentTerm, setPaymentTerm] = useState<string>("Select");
-  const [formData, setFormData] = useObjectState({
+  const [formData, setFormData] = useObjectState<IFormProps>({
     address: "",
     city: "",
     postCode: "",
@@ -31,6 +50,10 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
     clientCountry: "",
     invoiceDate: "",
     projectDescription: "",
+    itemName: "",
+    itemQuantity: "1",
+    itemPrice: "",
+    itemTotal: 0,
   });
 
   const handleSelect = (value: string) => {
@@ -47,6 +70,22 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
     const { name, value } = e.target;
     setFormData({ [name]: value });
   };
+
+  const handlePriceChange = (value: string) => {
+    if (formData.itemPrice === "0") return setFormData({ itemPrice: "" });
+    setFormData({ itemPrice: value });
+  };
+
+  const handleQuantityChange = (value: string) => {
+    if (formData.itemQuantity === "0") return setFormData({ itemQuantity: "" });
+    setFormData({ itemQuantity: value });
+  };
+
+  useEffect(() => {
+    setFormData({ itemTotal: +formData.itemQuantity * +formData.itemPrice });
+    handlePriceChange(formData.itemPrice);
+    handleQuantityChange(formData.itemQuantity);
+  }, [formData.itemQuantity, formData.itemPrice]);
 
   const paymentTermValue =
     paymentTerm === "Select"
@@ -183,7 +222,13 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
         </div>
         <div>
           <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
-          <ItemList />
+          <ItemList
+            handleInputChange={handleInputChange}
+            name={formData.itemName}
+            quantity={formData.itemQuantity}
+            price={formData.itemPrice}
+            total={formData.itemTotal}
+          />
         </div>
         <Button
           style={

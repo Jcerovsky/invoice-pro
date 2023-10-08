@@ -1,26 +1,18 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import InputField from "@/app/components/InputField";
-import { Context } from "@/app/context/Context";
 import { formatNumber } from "@/app/utils/formatNumber";
 
-function ItemList() {
-  const { name, quantity, price, total, setState } = useContext(Context)!;
+interface IProps {
+  name: string;
+  price: number | string;
+  total: number;
+  quantity: string | number;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  useEffect(() => {
-    setState({ total: +quantity * +price });
-  }, [quantity, price]);
-
-  const handlePriceChange = (value: string) => {
-    if (price === "0") return setState({ price: "" });
-    setState({ price: value });
-  };
-
-  const handleQuantityChange = (value: string) => {
-    if (quantity === "0") return setState({ quantity: "" });
-    setState({ quantity: value });
-  };
+function ItemList({ handleInputChange, name, price, quantity, total }: IProps) {
   return (
     <div>
       <div className="flex flex-wrap items-center mb-6 gap-3 ">
@@ -28,7 +20,8 @@ function ItemList() {
           labelName={"Item Name"}
           style="max-xs:basis-full flex-[12_1_0%]"
           value={name}
-          onChange={(e) => setState({ name: e.target.value })}
+          onChange={handleInputChange}
+          name="itemName"
         />
         <InputField
           labelName={"Qty."}
@@ -36,15 +29,17 @@ function ItemList() {
           style={"flex-[3_1_0%]"}
           type={"number"}
           value={quantity}
-          onChange={(e) => handleQuantityChange(e.target.value)}
+          name="itemQuantity"
+          onChange={handleInputChange}
         />
         <InputField
           labelName={"Price"}
           placeholder={"0"}
           type={"number"}
+          name="itemPrice"
           value={price}
           style={"flex-[4_1_0%]"}
-          onChange={(e) => handlePriceChange(e.target.value)}
+          onChange={handleInputChange}
         />
         <div className="relative flex-[3_1_0%]">
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">
