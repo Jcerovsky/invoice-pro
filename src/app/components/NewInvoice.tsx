@@ -34,9 +34,26 @@ interface IFormProps {
   itemTotal: number;
 }
 
+interface IInvoiceDetails {
+  itemName: string;
+  itemQuantity: string;
+  itemPrice: string;
+  itemTotal: number;
+}
+
 function NewInvoice({ isOpen, onClose }: IModalProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [paymentTerm, setPaymentTerm] = useState<string>("Select");
+
+  const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
+    {
+      itemName: "",
+      itemQuantity: "1",
+      itemPrice: "",
+      itemTotal: 0,
+    },
+  ]);
+
   const [formData, setFormData] = useObjectState<IFormProps>({
     address: "",
     city: "",
@@ -55,6 +72,24 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     itemPrice: "",
     itemTotal: 0,
   });
+
+  const handleAddInvoiceDetails = () => {
+    console.log("adding details");
+    const newItem = {
+      itemName: formData.itemName,
+      itemQuantity: formData.itemQuantity,
+      itemPrice: formData.itemPrice,
+      itemTotal: formData.itemTotal,
+    };
+    setInvoiceDetails([...invoiceDetails, newItem]);
+
+    setFormData({
+      itemName: "",
+      itemQuantity: "1",
+      itemPrice: "",
+      itemTotal: 0,
+    });
+  };
 
   const handleSelect = (value: string) => {
     setPaymentTerm(value);
@@ -222,18 +257,22 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
         </div>
         <div>
           <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
-          <ItemList
-            handleInputChange={handleInputChange}
-            name={formData.itemName}
-            quantity={formData.itemQuantity}
-            price={formData.itemPrice}
-            total={formData.itemTotal}
-          />
+          {invoiceDetails.map((invoiceItem, index) => (
+            <ItemList
+              key={index}
+              handleInputChange={handleInputChange}
+              name={invoiceItem.itemName}
+              quantity={invoiceItem.itemQuantity}
+              price={invoiceItem.itemPrice}
+              total={invoiceItem.itemTotal}
+            />
+          ))}
         </div>
         <Button
           style={
             "bg-purple-50 hover:bg-blue-100 text-mediumPurple mb-[2.875rem] dark:bg-buttonPurple dark:text-gray-300 dark:hover:bg-purple-500"
           }
+          onClick={handleAddInvoiceDetails}
         >
           + Add New Item
         </Button>

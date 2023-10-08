@@ -4,13 +4,15 @@ interface IButtonProps {
   children: ReactNode;
   style: string;
   type?: "submit" | "reset" | "button";
+  onClick?: () => void;
 }
 
-function Button({ children, style, type = "button" }: IButtonProps) {
+function Button({ children, style, type = "button", onClick }: IButtonProps) {
   return (
     <button
       type={type}
       className={`${style} px-6 cursor-pointer duration-300 rounded-full w-full h-[3rem] xs:whitespace-nowrap `}
+      onClick={onClick}
     >
       {children}
     </button>
