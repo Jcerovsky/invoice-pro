@@ -9,10 +9,21 @@ interface IProps {
   price: number | string;
   total: number;
   quantity: string | number;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  index: number;
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => void;
 }
 
-function ItemList({ handleInputChange, name, price, quantity, total }: IProps) {
+function ItemList({
+  handleInputChange,
+  name,
+  price,
+  quantity,
+  total,
+  index,
+}: IProps) {
   return (
     <div>
       <div className="flex flex-wrap items-center mb-6 gap-3 ">
@@ -20,7 +31,7 @@ function ItemList({ handleInputChange, name, price, quantity, total }: IProps) {
           labelName={"Item Name"}
           style="max-xs:basis-full flex-[12_1_0%]"
           value={name}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, index)}
           name="itemName"
         />
         <InputField
@@ -30,7 +41,7 @@ function ItemList({ handleInputChange, name, price, quantity, total }: IProps) {
           type={"number"}
           value={quantity}
           name="itemQuantity"
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, index)}
         />
         <InputField
           labelName={"Price"}
@@ -39,7 +50,7 @@ function ItemList({ handleInputChange, name, price, quantity, total }: IProps) {
           name="itemPrice"
           value={price}
           style={"flex-[4_1_0%]"}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, index)}
         />
         <div className="relative flex-[3_1_0%]">
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">

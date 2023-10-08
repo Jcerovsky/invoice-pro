@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import Button from "@/app/components/Button";
@@ -28,10 +26,7 @@ interface IFormProps {
   clientCountry: string;
   invoiceDate: string;
   projectDescription: string;
-  itemName: string;
-  itemQuantity: string;
-  itemPrice: string;
-  itemTotal: number;
+  items: IInvoiceDetails[];
 }
 
 interface IInvoiceDetails {
@@ -67,60 +62,84 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     clientCountry: "",
     invoiceDate: "",
     projectDescription: "",
-    itemName: "",
-    itemQuantity: "1",
-    itemPrice: "",
-    itemTotal: 0,
+    items: [
+      {
+        itemName: "",
+        itemQuantity: "1",
+        itemPrice: "",
+        itemTotal: 0,
+      },
+    ],
   });
 
   const handleAddInvoiceDetails = () => {
-    console.log("adding details");
     const newItem = {
-      itemName: formData.itemName,
-      itemQuantity: formData.itemQuantity,
-      itemPrice: formData.itemPrice,
-      itemTotal: formData.itemTotal,
-    };
-    setInvoiceDetails([...invoiceDetails, newItem]);
-
-    setFormData({
       itemName: "",
       itemQuantity: "1",
       itemPrice: "",
       itemTotal: 0,
-    });
+    };
+    setInvoiceDetails([...invoiceDetails, newItem]);
+
+    // setFormData({
+    //   itemName: "",
+    //   itemQuantity: "1",
+    //   itemPrice: "",
+    //   itemTotal: 0,
+    // });
   };
 
   const handleSelect = (value: string) => {
     setPaymentTerm(value);
-    console.log(calculateDueDate("2022-12-03", +value));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index?: number,
+  ) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    if (index !== undefined) {
+      const updatedItems = [...formData.items];
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [name as keyof IInvoiceDetails]: value,
+      };
+      setFormData({ items: updatedItems });
+    } else {
+      setFormData({ [name]: value });
+    }
   };
 
-  const handlePriceChange = (value: string) => {
-    if (formData.itemPrice === "0") return setFormData({ itemPrice: "" });
-    setFormData({ itemPrice: value });
-  };
-
-  const handleQuantityChange = (value: string) => {
-    if (formData.itemQuantity === "0") return setFormData({ itemQuantity: "" });
-    setFormData({ itemQuantity: value });
+  const handlePriceQtyChange = (
+    value: string,
+    index: number,
+    valueToBeChanged: "itemPrice" | "itemQuantity",
+  ) => {
+    const updatedItems = [...formData.items];
+    if (updatedItems[index].itemPrice === "0") {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [valueToBeChanged]: "",
+      };
+    }
+    updatedItems[index] = {
+      ...updatedItems[index],
+      [valueToBeChanged]: value,
+    };
+    setFormData({ ...formData, items: updatedItems });
   };
 
   useEffect(() => {
-    setFormData({ itemTotal: +formData.itemQuantity * +formData.itemPrice });
-    handlePriceChange(formData.itemPrice);
-    handleQuantityChange(formData.itemQuantity);
-  }, [formData.itemQuantity, formData.itemPrice]);
+    const updatedItems = formData.items.map((item, index) => ({
+      ...item,
+      itemTotal: +item.itemQuantity * +item.itemPrice,
+    }));
+    setFormData({ items: updatedItems });
+  }, [formData.items]);
 
   const paymentTermValue =
     paymentTerm === "Select"
@@ -265,6 +284,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
               quantity={invoiceItem.itemQuantity}
               price={invoiceItem.itemPrice}
               total={invoiceItem.itemTotal}
+              index={index}
             />
           ))}
         </div>
