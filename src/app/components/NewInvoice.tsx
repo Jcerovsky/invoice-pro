@@ -8,6 +8,7 @@ import ModalWrapper from "@/app/components/ModalWrapper";
 import GoBack from "@/app/components/GoBack";
 import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
+import { useObjectState } from "@/app/hooks/useObjectState";
 
 interface INewInvoiceProps {
   isOpen: boolean;
@@ -16,37 +17,126 @@ interface INewInvoiceProps {
 
 function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [paymentTerm, setPaymentTerm] = useState<string>("Select");
+  const [formData, setFormData] = useObjectState({
+    address: "",
+    city: "",
+    postCode: "",
+    country: "",
+    clientName: "",
+    clientEmail: "",
+    clientAddress: "",
+    clientCity: "",
+    clientPostCode: "",
+    clientCountry: "",
+    invoiceDate: "",
+  });
 
   const handleSelect = (value: string) => {
+    setPaymentTerm(value);
     console.log(calculateDueDate("2022-12-03", +value));
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
+  };
+
+  const paymentTermValue =
+    paymentTerm === "Select"
+      ? paymentTerm
+      : paymentTerm === "1"
+      ? `${paymentTerm} day`
+      : `${paymentTerm} days`;
+
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen}>
-      <form className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll ">
+      <form
+        className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll "
+        onSubmit={handleSubmit}
+      >
         <GoBack />
         <h1 className="dark:text-white text-3xl font-bold mb-[3rem]">
           New Invoice
         </h1>
         <div>
           <p className="text-heavyPurple font-bold mb-6">Bill from</p>
-          <InputField labelName={"Street Address"} />
+          <InputField
+            labelName={"Street Address"}
+            name={"address"}
+            value={formData.address}
+            onChange={handleInputChange}
+          />
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-x-4 mb-[3rem]">
-          <InputField labelName={"City"} />
-          <InputField labelName={"Post Code"} />
-          <InputField labelName={"Country"} />
+          <InputField
+            labelName={"City"}
+            name={"city"}
+            onChange={handleInputChange}
+            value={formData.city}
+          />
+          <InputField
+            labelName={"Post Code"}
+            name={"postCode"}
+            onChange={handleInputChange}
+            value={formData.postCode}
+          />
+          <InputField
+            labelName={"Country"}
+            name={"country"}
+            onChange={handleInputChange}
+            value={formData.country}
+          />
         </div>
         <div>
           <p className="text-heavyPurple font-bold mb-6">Bill to</p>
-          <InputField labelName={"Client's Name"} />
-          <InputField labelName={"Client's Email"} />
-          <InputField labelName={"Street Address"} id={"bill-to"} />
+          <InputField
+            labelName={"Client's Name"}
+            name={"clientName"}
+            onChange={handleInputChange}
+            value={formData.clientName}
+          />
+          <InputField
+            labelName={"Client's Email"}
+            name={"clientEmail"}
+            onChange={handleInputChange}
+            value={formData.clientEmail}
+          />
+          <InputField
+            labelName={"Street Address"}
+            id={"bill-to"}
+            name={"clientAddress"}
+            onChange={handleInputChange}
+            value={formData.clientAddress}
+          />
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-x-4 mb-4">
-          <InputField labelName={"City"} id={"bill-to"} />
-          <InputField labelName={"Post Code"} id={"bill-to"} />
-          <InputField labelName={"Country"} id={"bill-to"} />
+          <InputField
+            labelName={"City"}
+            id={"bill-to"}
+            name={"clientCity"}
+            onChange={handleInputChange}
+            value={formData.clientCity}
+          />
+          <InputField
+            labelName={"Post Code"}
+            id={"bill-to"}
+            name={"clientPostCode"}
+            onChange={handleInputChange}
+            value={formData.clientPostCode}
+          />
+          <InputField
+            labelName={"Country"}
+            id={"bill-to"}
+            name={"clientCountry"}
+            onChange={handleInputChange}
+            value={formData.clientCountry}
+          />
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-x-4 mb-6">
           <div>
@@ -54,23 +144,25 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
               className="text-mediumPurple dark:text-white"
               htmlFor={"invoice-date"}
             />
-            <div className="relative">
-              <img
-                src="/assets/icon-calendar.svg"
-                alt="calendar-icon"
-                className="absolute top-1/2 left-4"
+            <div className="relative flex items-center">
+              <InputField
+                labelName={"Invoice Date"}
+                type={"date"}
+                style={"placeholder-ml-6"}
+                name={"invoiceDate"}
+                onChange={handleInputChange}
+                value={formData.invoiceDate}
               />
-              <InputField labelName={"Invoice Date"} />
             </div>
           </div>
           <div className="relative">
             <p className="mb-3 text-mediumPurple font-light">Payment Terms</p>
             <div
-              className="border flex justify-between border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
+              className="border items-center flex justify-between border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
         px-4 "
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
-              <span>Select</span>
+              <span className="font-semibold">{paymentTermValue}</span>
               <img
                 src={"/assets/icon-arrow-down.svg"}
                 alt="arrow-img"
@@ -106,7 +198,10 @@ function NewInvoice({ isOpen, onClose }: INewInvoiceProps) {
           >
             Save as Draft
           </Button>
-          <Button style={"bg-buttonPurple hover:bg-purple-500 text-white"}>
+          <Button
+            style={"bg-buttonPurple hover:bg-purple-500 text-white"}
+            type={"submit"}
+          >
             Save & Send
           </Button>
         </div>
