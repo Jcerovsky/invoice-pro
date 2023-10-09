@@ -121,18 +121,27 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     }
   };
 
+  const handleDelete = (index: number) => {
+    if (invoiceDetails.length > 1 && index !== 0) {
+      const updatedInvoiceDetails = invoiceDetails.filter(
+        (_, i) => i !== index,
+      );
+      setInvoiceDetails(updatedInvoiceDetails);
+      setFormData({ items: updatedInvoiceDetails });
+    }
+  };
+
   const calculateTotal = () => {
-    const updatedItems = formData.items.map((item, index) => ({
+    const updatedItems = invoiceDetails.map((item) => ({
       ...item,
       itemTotal: +item.itemQuantity * +item.itemPrice,
     }));
-    setFormData({ items: updatedItems });
     setInvoiceDetails(updatedItems);
   };
 
   useEffect(() => {
     calculateTotal();
-  }, []);
+  }, [formData]);
 
   const paymentTermValue =
     paymentTerm === "Select"
@@ -277,6 +286,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
               quantity={invoiceItem.itemQuantity}
               price={invoiceItem.itemPrice}
               total={invoiceItem.itemTotal}
+              handleDelete={handleDelete}
               index={index}
             />
           ))}
