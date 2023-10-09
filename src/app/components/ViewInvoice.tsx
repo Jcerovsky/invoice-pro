@@ -138,7 +138,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
           </div>
           {invoiceData.items.map((item) => (
             <div
-              key={invoiceData.id}
+              key={`${item.price}-${item.name}`}
               className="flex items-center gap-3 font-semibold"
             >
               {screenSize === "xs" ? (

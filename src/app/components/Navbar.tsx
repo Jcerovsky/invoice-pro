@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "@/app/context/Context";
-import NewInvoice from "@/app/components/NewInvoice";
 
 function Navbar() {
-  const { theme, setState, isInvoiceModalOpen } = useContext(Context)!;
+  const { theme, setState } = useContext(Context)!;
 
   useEffect(() => {
     if (theme === "light") {
@@ -36,7 +35,7 @@ function Navbar() {
       </div>
       <img
         src={`/assets/icon-${theme === "light" ? "moon" : "sun"}.svg`}
-        alt={`theme-logo`}
+        alt="theme-logo"
         className="hover:text-white duration-300 cursor-pointer self-center ml-auto px-6 desktop:ml-0 desktop:mt-auto
         desktop:py-7 "
         onClick={() =>
