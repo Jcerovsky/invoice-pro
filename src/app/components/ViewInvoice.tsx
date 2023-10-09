@@ -14,8 +14,8 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
 
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
   return (
-    <div>
-      <GoBack />
+    <div className="mt-28 mb-12 px-4 pb-20 desktop:mt-8 max-w-[43rem] ml-auto mr-auto">
+      <GoBack showOnBiggerScreen={true} />
       <div
         className={`mb-6 rounded-lg bg-white dark:bg-themeColor flex items-center py-6 px-8 justify-between ${
           screenSize !== "small" && screenSize !== "xs" && ""

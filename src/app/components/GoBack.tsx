@@ -4,11 +4,13 @@ import React, { useContext } from "react";
 import Image from "next/image";
 import { Context } from "@/app/context/Context";
 
-function GoBack() {
+function GoBack({ showOnBiggerScreen }: { showOnBiggerScreen?: boolean }) {
   const { setState } = useContext(Context)!;
   return (
     <div
-      className="sm:hidden flex items-center gap-5 mb-6 cursor-pointer"
+      className={`${
+        !showOnBiggerScreen && "sm:hidden"
+      } flex items-center gap-5 mb-6 cursor-pointer`}
       onClick={() => setState({ isInvoiceModalOpen: false })}
     >
       <Image
