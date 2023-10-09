@@ -1,17 +1,32 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import { Context } from "@/app/context/Context";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 function GoBack({ showOnBiggerScreen }: { showOnBiggerScreen?: boolean }) {
   const { setState } = useContext(Context)!;
+  const router = useRouter();
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
+
+  const handleGoBack = async () => {
+    setIsWaiting(true);
+    setState({ isInvoiceModalOpen: false });
+    await router.push("/");
+    setIsWaiting(false);
+  };
+  if (isWaiting) {
+    return <Loading />;
+  }
+
   return (
     <div
       className={`${
         !showOnBiggerScreen && "sm:hidden"
       } flex items-center gap-5 mb-6 cursor-pointer`}
-      onClick={() => setState({ isInvoiceModalOpen: false })}
+      onClick={handleGoBack}
     >
       <Image
         width={10}
