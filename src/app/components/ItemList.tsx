@@ -13,6 +13,7 @@ interface IProps {
   handleInputChange: (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
+    valueToBeChanged?: "itemPrice" | "itemQuantity",
   ) => void;
 }
 
@@ -41,7 +42,7 @@ function ItemList({
           type={"number"}
           value={quantity}
           name="itemQuantity"
-          onChange={(e) => handleInputChange(e, index)}
+          onChange={(e) => handleInputChange(e, index, "itemQuantity")}
         />
         <InputField
           labelName={"Price"}
@@ -50,7 +51,7 @@ function ItemList({
           name="itemPrice"
           value={price}
           style={"flex-[4_1_0%]"}
-          onChange={(e) => handleInputChange(e, index)}
+          onChange={(e) => handleInputChange(e, index, "itemPrice")}
         />
         <div className="relative flex-[3_1_0%]">
           <p className="text-mediumPurple dark:text-white font-light absolute top-[-1.75rem] ">

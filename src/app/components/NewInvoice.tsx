@@ -79,14 +79,9 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       itemPrice: "",
       itemTotal: 0,
     };
-    setInvoiceDetails([...invoiceDetails, newItem]);
-
-    // setFormData({
-    //   itemName: "",
-    //   itemQuantity: "1",
-    //   itemPrice: "",
-    //   itemTotal: 0,
-    // });
+    const updatedItems = [...invoiceDetails, newItem];
+    setInvoiceDetails(updatedItems);
+    setFormData({ items: updatedItems });
   };
 
   const handleSelect = (value: string) => {
@@ -100,46 +95,44 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index?: number,
+    valueToBeChanged?: "itemPrice" | "itemQuantity",
   ) => {
     const { name, value } = e.target;
+
     if (index !== undefined) {
       const updatedItems = [...formData.items];
-      updatedItems[index] = {
-        ...updatedItems[index],
-        [name as keyof IInvoiceDetails]: value,
-      };
+
+      if (valueToBeChanged) {
+        updatedItems[index] = {
+          ...updatedItems[index],
+          [valueToBeChanged]: value === "0" ? "" : value,
+        };
+      } else {
+        updatedItems[index] = {
+          ...updatedItems[index],
+          [name as keyof IInvoiceDetails]: value,
+        };
+      }
+
       setFormData({ items: updatedItems });
+      setInvoiceDetails(updatedItems);
     } else {
       setFormData({ [name]: value });
     }
   };
 
-  const handlePriceQtyChange = (
-    value: string,
-    index: number,
-    valueToBeChanged: "itemPrice" | "itemQuantity",
-  ) => {
-    const updatedItems = [...formData.items];
-    if (updatedItems[index].itemPrice === "0") {
-      updatedItems[index] = {
-        ...updatedItems[index],
-        [valueToBeChanged]: "",
-      };
-    }
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [valueToBeChanged]: value,
-    };
-    setFormData({ ...formData, items: updatedItems });
-  };
-
-  useEffect(() => {
+  const calculateTotal = () => {
     const updatedItems = formData.items.map((item, index) => ({
       ...item,
       itemTotal: +item.itemQuantity * +item.itemPrice,
     }));
     setFormData({ items: updatedItems });
-  }, [formData.items]);
+    setInvoiceDetails(updatedItems);
+  };
+
+  useEffect(() => {
+    calculateTotal();
+  }, []);
 
   const paymentTermValue =
     paymentTerm === "Select"
@@ -278,7 +271,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
           <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
           {invoiceDetails.map((invoiceItem, index) => (
             <ItemList
-              key={index}
+              key={`${index}`}
               handleInputChange={handleInputChange}
               name={invoiceItem.itemName}
               quantity={invoiceItem.itemQuantity}
