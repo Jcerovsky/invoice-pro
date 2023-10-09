@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
@@ -7,6 +7,7 @@ import GoBack from "@/app/components/GoBack";
 import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
 import { useObjectState } from "@/app/hooks/useObjectState";
+import { Context } from "@/app/context/Context";
 
 interface IModalProps {
   isOpen: boolean;
@@ -36,50 +37,42 @@ interface IInvoiceDetails {
   itemTotal: number;
 }
 
+const emptyInvoiceDetails = {
+  itemName: "",
+  itemQuantity: "1",
+  itemPrice: "",
+  itemTotal: 0,
+};
+
+const emptyForm = {
+  address: "",
+  city: "",
+  postCode: "",
+  country: "",
+  clientName: "",
+  clientEmail: "",
+  clientAddress: "",
+  clientCity: "",
+  clientPostCode: "",
+  clientCountry: "",
+  invoiceDate: "",
+  projectDescription: "",
+  items: [emptyInvoiceDetails],
+};
+
 function NewInvoice({ isOpen, onClose }: IModalProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [paymentTerm, setPaymentTerm] = useState<string>("Select");
+  const { isInvoiceModalOpen, setState } = useContext(Context)!;
 
   const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
-    {
-      itemName: "",
-      itemQuantity: "1",
-      itemPrice: "",
-      itemTotal: 0,
-    },
+    emptyInvoiceDetails,
   ]);
 
-  const [formData, setFormData] = useObjectState<IFormProps>({
-    address: "",
-    city: "",
-    postCode: "",
-    country: "",
-    clientName: "",
-    clientEmail: "",
-    clientAddress: "",
-    clientCity: "",
-    clientPostCode: "",
-    clientCountry: "",
-    invoiceDate: "",
-    projectDescription: "",
-    items: [
-      {
-        itemName: "",
-        itemQuantity: "1",
-        itemPrice: "",
-        itemTotal: 0,
-      },
-    ],
-  });
+  const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
 
   const handleAddInvoiceDetails = () => {
-    const newItem = {
-      itemName: "",
-      itemQuantity: "1",
-      itemPrice: "",
-      itemTotal: 0,
-    };
-    const updatedItems = [...invoiceDetails, newItem];
+    const updatedItems = [...invoiceDetails, emptyInvoiceDetails];
     setInvoiceDetails(updatedItems);
     setFormData({ items: updatedItems });
   };
@@ -129,6 +122,13 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       setInvoiceDetails(updatedInvoiceDetails);
       setFormData({ items: updatedInvoiceDetails });
     }
+  };
+
+  const handleDiscard = () => {
+    setFormData(emptyForm);
+    setInvoiceDetails([emptyInvoiceDetails]);
+    setPaymentTerm("Select");
+    setState({ isInvoiceModalOpen: false });
   };
 
   const calculateTotal = () => {
@@ -304,6 +304,10 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
             style={
               "bg-purple-50 hover:bg-blue-100 text-mediumPurple max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
             }
+            onClick={() => {
+              const confirmed = confirm("Are you sure?");
+              if (confirmed) handleDiscard();
+            }}
           >
             Discard
           </Button>
