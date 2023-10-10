@@ -4,7 +4,7 @@ interface IButtonProps {
   children: ReactNode;
   style: string;
   type?: "submit" | "reset" | "button";
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 function Button({ children, style, type = "button", onClick }: IButtonProps) {

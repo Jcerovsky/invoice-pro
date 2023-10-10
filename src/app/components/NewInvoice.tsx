@@ -83,7 +83,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     setFormData({ paymentTerms: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent, paymentStatus = "pending") => {
     e.preventDefault();
     const newInvoiceData: IInvoice = {
       id: generateRandomId(allInvoices)!,
@@ -96,7 +96,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       paymentTerms: formData.paymentTerms as number,
       clientName: formData.clientName,
       clientEmail: formData.clientEmail,
-      status: "pending",
+      status: paymentStatus,
       senderAddress: {
         street: formData.address,
         city: formData.city,
@@ -109,7 +109,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
         postCode: formData.clientPostCode,
         country: formData.clientCountry,
       },
-      items: invoiceDetails,
+      items: [invoiceDetails],
       total: formData.items.reduce((acc, total) => acc + total.total, 0),
     };
     const updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
@@ -357,8 +357,9 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
           </Button>
           <Button
             style={
-              "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200"
+              "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
             }
+            onClick={(e) => handleSubmit(e, "draft")}
           >
             Save as Draft
           </Button>
