@@ -115,6 +115,9 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     const updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
     updatedInvoices.push(newInvoiceData);
     setState({ allInvoices: updatedInvoices });
+    setFormData(emptyForm);
+    setInvoiceDetails([emptyInvoiceDetails]);
+    setState({ isInvoiceModalOpen: false });
   };
 
   const handleInputChange = (
