@@ -29,12 +29,17 @@ function AllInvoices() {
     handleFilter();
   }, [checkboxState]);
 
+  const invoiceCount =
+    filteredInvoices !== undefined
+      ? filteredInvoices.length
+      : allInvoices.length;
+
   const invoicesToBeDisplayed =
     filteredInvoices?.length > 0 ? filteredInvoices : allInvoices;
 
   return (
     <div>
-      <InvoiceOverview />
+      <InvoiceOverview invoiceCount={invoiceCount} />
 
       {invoicesToBeDisplayed.map((invoice) => (
         <div key={crypto.randomUUID()}>

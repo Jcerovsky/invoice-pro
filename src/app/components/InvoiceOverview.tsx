@@ -6,7 +6,7 @@ import CustomCheckbox from "@/app/components/CustomCheckbox";
 import { handleClickOutside } from "@/app/utils/handleClickOutside";
 import NewInvoice from "@/app/components/NewInvoice";
 
-function InvoiceOverview() {
+function InvoiceOverview({ invoiceCount }: { invoiceCount: number }) {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
 
   const { screenSize, checkboxState, setState, isInvoiceModalOpen } =
@@ -30,7 +30,9 @@ function InvoiceOverview() {
     <div className="flex mt-[7.5rem] desktop:mt-[4rem] mb-8 items-center gap-4 flex-wrap">
       <div>
         <h1 className="text-2xl sm:text-5xl font-bold">Invoices</h1>
-        <p>Total of 7 Invoices</p>
+        <p>
+          Total of {invoiceCount} {invoiceCount === 1 ? "Invoice" : " Invoices"}
+        </p>
       </div>
 
       <div
