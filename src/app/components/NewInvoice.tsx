@@ -41,7 +41,7 @@ interface IInvoiceDetails {
 
 const emptyInvoiceDetails = {
   name: "",
-  quantity: "1",
+  quantity: 1,
   price: "",
   total: 0,
 };
@@ -109,11 +109,12 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
         postCode: formData.clientPostCode,
         country: formData.clientCountry,
       },
-      items: [invoiceDetails],
+      items: invoiceDetails,
       total: formData.items.reduce((acc, total) => acc + total.total, 0),
     };
-    const updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
-    updatedInvoices.push(newInvoiceData);
+    let updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
+    updatedInvoices = [newInvoiceData, ...updatedInvoices];
+    console.log(updatedInvoices);
     setState({ allInvoices: updatedInvoices });
     setFormData(emptyForm);
     setInvoiceDetails([emptyInvoiceDetails]);

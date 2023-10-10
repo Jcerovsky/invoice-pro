@@ -5,9 +5,12 @@ import { Context, IInvoice } from "@/app/context/Context";
 import PaymentStatus from "@/app/components/PaymentStatus";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/app/utils/formatDate";
+import { formatNumber } from "@/app/utils/formatNumber";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   const { screenSize } = useContext(Context)!;
+
+  const totalAmount = invoiceData.items.reduce((a, b) => a + b.total, 0);
 
   const router = useRouter();
   return (
@@ -28,7 +31,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
         <p
           className={` font-bold text-xl ${screenSize === "large" && "hidden"}`}
         >
-          $ {invoiceData.total}
+          $ {formatNumber(totalAmount)}
         </p>
         <p
           className={`text-mediumPurple text-sm font-normal dark:text-gray-300 ${
@@ -53,7 +56,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
         <p
           className={` font-bold text-xl ${screenSize !== "large" && "hidden"}`}
         >
-          $ {invoiceData.total}
+          $ {formatNumber(totalAmount)}
         </p>
         <PaymentStatus status={invoiceData.status} />
       </div>

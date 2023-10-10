@@ -28,8 +28,8 @@ export interface IInvoice {
   };
   items: Array<{
     name: string;
-    quantity: number;
-    price: number;
+    quantity: string | number;
+    price: string | number;
     total: number;
   }>;
   total: number;
