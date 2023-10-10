@@ -27,6 +27,7 @@ interface IFormProps {
   clientCountry: string;
   invoiceDate: string;
   projectDescription: string;
+  paymentTerms: number;
   items: IInvoiceDetails[];
 }
 
@@ -57,6 +58,7 @@ const emptyForm = {
   clientCountry: "",
   invoiceDate: "",
   projectDescription: "",
+  paymentTerms: 0,
   items: [emptyInvoiceDetails],
 };
 
@@ -77,8 +79,8 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     setFormData({ items: updatedItems });
   };
 
-  const handleSelect = (value: string) => {
-    setPaymentTerm(value);
+  const handleSelectPaymentTerm = (value: string) => {
+    setFormData({ paymentTerms: +value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -159,8 +161,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       }
     >
       <form
-        className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll
-        "
+        className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll "
         onSubmit={handleSubmit}
       >
         <GoBack />
@@ -271,7 +272,10 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
                 alt="arrow-img"
                 className={`${isVisible && "rotate-180 "} duration-300 ml-2`}
               />
-              <PaymentTerms handleSelect={handleSelect} isVisible={isVisible} />
+              <PaymentTerms
+                handleSelectPaymentTerm={handleSelectPaymentTerm}
+                isVisible={isVisible}
+              />
             </div>
           </div>
         </div>
@@ -322,7 +326,6 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
             style={
               "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200"
             }
-            type={"submit"}
           >
             Save as Draft
           </Button>
