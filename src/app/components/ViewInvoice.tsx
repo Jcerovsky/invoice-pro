@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import GoBack from "@/app/components/GoBack";
 import PaymentStatus from "@/app/components/PaymentStatus";
 import { formatDate } from "@/app/utils/formatDate";
 import { formatNumber } from "@/app/utils/formatNumber";
 import { Context, IInvoice } from "@/app/context/Context";
 import { useRouter } from "next/navigation";
+import ConfirmDeletion from "@/app/components/ConfirmDeletion";
+import ModalWrapper from "@/app/components/ModalWrapper";
 
 function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
   const router = useRouter();
   const { screenSize, allInvoices, setState } = useContext(Context)!;
+  const [isDeleteInvoiceModalOpen, setIsDeleteInvoiceModalOpen] =
+    useState<boolean>(false);
 
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
@@ -44,7 +48,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
         </button>
         <button
           className="px-6 py-2 cursor-pointer rounded-2xl bg-red-500 hover:bg-red-400 text-white duration-200"
-          onClick={handleDelete}
+          onClick={() => setIsDeleteInvoiceModalOpen(true)}
         >
           Delete
         </button>
@@ -216,6 +220,16 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
           <Buttons />
         </div>
       </div>
+      <ModalWrapper
+        isOpen={isDeleteInvoiceModalOpen}
+        onClose={() => setIsDeleteInvoiceModalOpen(false)}
+      >
+        <ConfirmDeletion
+          invoiceId={invoiceData.id}
+          handleDelete={handleDelete}
+          setIsDeleteInvoiceModalOpen={setIsDeleteInvoiceModalOpen}
+        />
+      </ModalWrapper>
     </div>
   );
 }

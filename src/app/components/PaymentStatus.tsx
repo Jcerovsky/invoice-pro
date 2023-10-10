@@ -13,7 +13,7 @@ function PaymentStatus({ status, style }: { status: string; style?: string }) {
     status === "paid"
       ? "text-green-500"
       : status === "draft"
-      ? "mediumPurple"
+      ? "text-mediumPurple"
       : "text-orange-500";
 
   const statusCircleColor =

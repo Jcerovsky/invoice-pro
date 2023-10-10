@@ -151,9 +151,16 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       : `${paymentTerm} days`;
 
   return (
-    <ModalWrapper onClose={onClose} isOpen={isOpen}>
+    <ModalWrapper
+      onClose={onClose}
+      isOpen={isOpen}
+      style={
+        "fixed left-0 top-[5rem] desktop:top-0 desktop:bottom-0 desktop:max-h-screen desktop:left-24"
+      }
+    >
       <form
-        className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll "
+        className="bg-white dark:bg-themeColorBg sm:rounded-r-3xl p-6 xs:p-16 relative max-w-[38.75rem] overflow-y-scroll
+        "
         onSubmit={handleSubmit}
       >
         <GoBack />
@@ -315,6 +322,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
             style={
               "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200"
             }
+            type={"submit"}
           >
             Save as Draft
           </Button>
