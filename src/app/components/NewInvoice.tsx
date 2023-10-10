@@ -28,7 +28,7 @@ interface IFormProps {
   clientCountry: string;
   invoiceDate: string;
   projectDescription: string;
-  paymentTerms: number | string;
+  paymentTerms: number;
   items: IInvoiceDetails[];
 }
 
@@ -59,18 +59,17 @@ const emptyForm = {
   clientCountry: "",
   invoiceDate: "",
   projectDescription: "",
-  paymentTerms: "Select",
+  paymentTerms: 0,
   items: [emptyInvoiceDetails],
 };
 
 function NewInvoice({ isOpen, onClose }: IModalProps) {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
   const { setState, allInvoices } = useContext(Context)!;
-
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
     emptyInvoiceDetails,
   ]);
-
+  const [paymentTermMissing, setPaymentTermMissing] = useState<boolean>(false);
   const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
 
   const handleAddInvoiceDetails = () => {
@@ -85,40 +84,43 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
 
   const handleSubmit = (e: React.FormEvent, paymentStatus = "pending") => {
     e.preventDefault();
-    const newInvoiceData: IInvoice = {
-      id: generateRandomId(allInvoices)!,
-      createdAt: formData.invoiceDate,
-      paymentDue: calculateDueDate(
-        formData.invoiceDate,
-        +formData.paymentTerms,
-      ),
-      description: formData.projectDescription,
-      paymentTerms: formData.paymentTerms as number,
-      clientName: formData.clientName,
-      clientEmail: formData.clientEmail,
-      status: paymentStatus,
-      senderAddress: {
-        street: formData.address,
-        city: formData.city,
-        postCode: formData.postCode,
-        country: formData.country,
-      },
-      clientAddress: {
-        street: formData.clientAddress,
-        city: formData.clientCity,
-        postCode: formData.clientPostCode,
-        country: formData.clientCountry,
-      },
-      items: invoiceDetails,
-      total: formData.items.reduce((acc, total) => acc + total.total, 0),
-    };
-    let updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
-    updatedInvoices = [newInvoiceData, ...updatedInvoices];
-    console.log(updatedInvoices);
-    setState({ allInvoices: updatedInvoices });
-    setFormData(emptyForm);
-    setInvoiceDetails([emptyInvoiceDetails]);
-    setState({ isInvoiceModalOpen: false });
+    if (formData.paymentTerms > 0) {
+      const newInvoiceData: IInvoice = {
+        id: generateRandomId(allInvoices)!,
+        createdAt: formData.invoiceDate,
+        paymentDue: calculateDueDate(
+          formData.invoiceDate,
+          +formData.paymentTerms,
+        ),
+        description: formData.projectDescription,
+        paymentTerms: formData.paymentTerms,
+        clientName: formData.clientName,
+        clientEmail: formData.clientEmail,
+        status: paymentStatus,
+        senderAddress: {
+          street: formData.address,
+          city: formData.city,
+          postCode: formData.postCode,
+          country: formData.country,
+        },
+        clientAddress: {
+          street: formData.clientAddress,
+          city: formData.clientCity,
+          postCode: formData.clientPostCode,
+          country: formData.clientCountry,
+        },
+        items: invoiceDetails,
+        total: formData.items.reduce((acc, total) => acc + total.total, 0),
+      };
+      let updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
+      updatedInvoices = [newInvoiceData, ...updatedInvoices];
+      console.log(updatedInvoices);
+      setState({ allInvoices: updatedInvoices });
+      setFormData(emptyForm);
+      setInvoiceDetails([emptyInvoiceDetails]);
+      setState({ isInvoiceModalOpen: false });
+    }
+    setPaymentTermMissing(true);
   };
 
   const handleInputChange = (
@@ -178,13 +180,6 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   useEffect(() => {
     calculateTotal();
   }, [formData]);
-
-  const paymentTermValue =
-    formData.paymentTerms === "Select"
-      ? formData.paymentTerms
-      : formData.paymentTerms === "1"
-      ? `${formData.paymentTerms} day`
-      : `${formData.paymentTerms} days`;
 
   return (
     <ModalWrapper
@@ -300,11 +295,19 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
               Payment Terms
             </p>
             <div
-              className="border items-center flex justify-between border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
-        px-4 "
+              className={`border items-center flex justify-between  rounded-md py-4 h-[3rem] w-full 
+                dark:bg-themeColor hover:border-heavyPurple px-4 ${
+                  paymentTermMissing ? "border-red-700" : "border-lightPurple"
+                }`}
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
-              <span className="font-medium">{paymentTermValue}</span>
+              <span className="font-medium">
+                {formData.paymentTerms === 0
+                  ? "Select"
+                  : formData.paymentTerms === 1
+                  ? `${formData.paymentTerms} day`
+                  : `${formData.paymentTerms} days`}
+              </span>
               <img
                 src={"/assets/icon-arrow-down.svg"}
                 alt="arrow-img"
