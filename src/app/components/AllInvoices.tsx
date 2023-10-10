@@ -30,7 +30,7 @@ function AllInvoices() {
   }, [checkboxState]);
 
   const invoiceCount =
-    filteredInvoices !== undefined
+    filteredInvoices.length !== 0
       ? filteredInvoices.length
       : allInvoices.length;
 

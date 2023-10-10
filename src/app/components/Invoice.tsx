@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { Context, IInvoice } from "@/app/context/Context";
 import PaymentStatus from "@/app/components/PaymentStatus";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/app/utils/formatDate";
 
 function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
   const { screenSize } = useContext(Context)!;
@@ -22,7 +23,7 @@ function Invoice({ invoiceData }: { invoiceData: IInvoice }) {
           {invoiceData.id}
         </p>
         <p className="mb-2 text-mediumPurple dark:text-gray-300">
-          Due {invoiceData.paymentDue}
+          Due {formatDate(invoiceData.paymentDue)}
         </p>
         <p
           className={` font-bold text-xl ${screenSize === "large" && "hidden"}`}
