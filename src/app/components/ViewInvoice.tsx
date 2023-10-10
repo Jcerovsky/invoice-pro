@@ -178,7 +178,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
               className="flex items-center gap-3 font-semibold"
             >
               {screenSize === "xs" ? (
-                <div>
+                <div className="border-b border-black mb-2">
                   <p
                     className={`${
                       screenSize === "xs" ? "mb-2" : "mb-8"
@@ -187,7 +187,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
                     {item.name}
                   </p>
                   <p className="text-gray-500 ">
-                    {item.quantity} x ${formatNumber(item.price)}
+                    {item.quantity} x ${formatNumber(+item.price)}
                   </p>
                 </div>
               ) : (
@@ -198,14 +198,14 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
                 {item.quantity}
               </p>
               <p className={`mb-8 text-left ${hideWhenScreenXs}`}>
-                ${formatNumber(item.price)}
+                ${formatNumber(+item.price)}
               </p>
               <p className="mb-8 text-left ">${formatNumber(item.total)}</p>
             </div>
           ))}
         </div>
         <div
-          className={`dark:bg-neutral-800 bg-[#373B53] text-zinc-50 rounded-b-lg flex flex-wrap justify-between ${
+          className={` dark:bg-[#0C0E16] bg-[#373B53] text-zinc-50 rounded-b-lg flex flex-wrap justify-between ${
             screenSize === "small" ? "p-6" : "p-8"
           }`}
         >

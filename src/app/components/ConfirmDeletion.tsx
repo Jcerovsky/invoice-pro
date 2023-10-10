@@ -21,14 +21,14 @@ function ConfirmDeletion({
       </p>
       <div className="flex flex-col xxs:flex-row xxs:justify-end gap-2">
         <button
-          className="px-6 py-4 cursor-pointer rounded-full duration-300 bg-[#252945] hover:bg-themeColorBg text-mediumPurple
-        dark:text-white"
+          className="px-6 py-3 cursor-pointer rounded-full duration-300 bg-[#252945] hover:bg-themeColorBg text-mediumPurple
+        dark:text-white hover:text-zinc-50"
           onClick={() => setIsDeleteInvoiceModalOpen(false)}
         >
           Cancel
         </button>
         <button
-          className="px-6 py-4 cursor-pointer rounded-full duration-300 bg-red-500 hover:bg-red-300 text-white"
+          className="px-6 py-3 cursor-pointer rounded-full duration-300 bg-red-500 hover:bg-red-300 text-white"
           onClick={handleDelete}
         >
           Delete

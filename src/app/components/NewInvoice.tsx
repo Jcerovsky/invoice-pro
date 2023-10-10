@@ -294,7 +294,9 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
             </div>
           </div>
           <div className="relative">
-            <p className="mb-3 text-mediumPurple font-light">Payment Terms</p>
+            <p className="mb-3 text-mediumPurple dark:text-white font-light">
+              Payment Terms
+            </p>
             <div
               className="border items-center flex justify-between border-lightPurple rounded-md py-4 h-[3rem] w-full dark:bg-themeColor hover:border-heavyPurple
         px-4 "
@@ -322,7 +324,9 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
           />
         </div>
         <div>
-          <h2 className="text-gray-500 font-medium text-2xl mb-4">Item List</h2>
+          <h2 className="text-gray-500 dark:text-heavyPurple font-medium text-2xl mb-4">
+            Item List
+          </h2>
           {invoiceDetails.map((invoiceItem, index) => (
             <ItemList
               key={`${index}`}
@@ -338,16 +342,16 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
         </div>
         <Button
           style={
-            "bg-purple-50 hover:bg-blue-100 text-mediumPurple mb-[2.875rem] dark:bg-buttonPurple dark:text-gray-300 dark:hover:bg-purple-500"
+            "bg-purple-50 hover:bg-blue-100 text-mediumPurple font-medium mb-[2.875rem] dark:bg-buttonPurple dark:text-gray-300 dark:hover:bg-purple-500"
           }
           onClick={handleAddInvoiceDetails}
         >
           + Add New Item
         </Button>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 xxs:grid-cols-3 gap-2">
           <Button
             style={
-              "bg-purple-50 hover:bg-blue-100 text-mediumPurple max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
+              "bg-purple-50 hover:bg-blue-100 text-mediumPurple w-full xxs:max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
             }
             onClick={() => {
               const confirmed = confirm("Are you sure?");
@@ -358,7 +362,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
           </Button>
           <Button
             style={
-              "bg-neutral-700 hover:bg-neutral-600 text-gray-400 ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
+              "bg-neutral-700 hover:bg-neutral-600 text-gray-400 xxs:ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
             }
             onClick={(e) => handleSubmit(e, "draft")}
           >
