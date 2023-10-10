@@ -4,7 +4,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: ReactNode;
-  style: string;
+  style?: string;
 }
 
 const ModalWrapper = ({ isOpen, onClose, children, style }: ModalProps) => {

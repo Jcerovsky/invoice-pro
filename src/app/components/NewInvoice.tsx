@@ -7,7 +7,8 @@ import GoBack from "@/app/components/GoBack";
 import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
 import { useObjectState } from "@/app/hooks/useObjectState";
-import { Context } from "@/app/context/Context";
+import { Context, IInvoice } from "@/app/context/Context";
+import { generateRandomId } from "@/app/utils/generateRandomId";
 
 interface IModalProps {
   isOpen: boolean;
@@ -27,22 +28,22 @@ interface IFormProps {
   clientCountry: string;
   invoiceDate: string;
   projectDescription: string;
-  paymentTerms: number;
+  paymentTerms: number | string;
   items: IInvoiceDetails[];
 }
 
 interface IInvoiceDetails {
-  itemName: string;
-  itemQuantity: string;
-  itemPrice: string;
-  itemTotal: number;
+  name: string;
+  quantity: string | number;
+  price: string | number;
+  total: number;
 }
 
 const emptyInvoiceDetails = {
-  itemName: "",
-  itemQuantity: "1",
-  itemPrice: "",
-  itemTotal: 0,
+  name: "",
+  quantity: "1",
+  price: "",
+  total: 0,
 };
 
 const emptyForm = {
@@ -58,14 +59,13 @@ const emptyForm = {
   clientCountry: "",
   invoiceDate: "",
   projectDescription: "",
-  paymentTerms: 0,
+  paymentTerms: "Select",
   items: [emptyInvoiceDetails],
 };
 
 function NewInvoice({ isOpen, onClose }: IModalProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [paymentTerm, setPaymentTerm] = useState<string>("Select");
-  const { isInvoiceModalOpen, setState } = useContext(Context)!;
+  const { setState, allInvoices } = useContext(Context)!;
 
   const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
     emptyInvoiceDetails,
@@ -79,18 +79,48 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
     setFormData({ items: updatedItems });
   };
 
-  const handleSelectPaymentTerm = (value: string) => {
-    setFormData({ paymentTerms: +value });
+  const handleSelectPaymentTerm = (value: number) => {
+    setFormData({ paymentTerms: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newInvoiceData: IInvoice = {
+      id: generateRandomId(allInvoices)!,
+      createdAt: formData.invoiceDate,
+      paymentDue: calculateDueDate(
+        formData.invoiceDate,
+        +formData.paymentTerms,
+      ),
+      description: formData.projectDescription,
+      paymentTerms: formData.paymentTerms as number,
+      clientName: formData.clientName,
+      clientEmail: formData.clientEmail,
+      status: "pending",
+      senderAddress: {
+        street: formData.address,
+        city: formData.city,
+        postCode: formData.postCode,
+        country: formData.country,
+      },
+      clientAddress: {
+        street: formData.clientAddress,
+        city: formData.clientCity,
+        postCode: formData.clientPostCode,
+        country: formData.clientCountry,
+      },
+      items: invoiceDetails,
+      total: formData.items.reduce((acc, total) => acc + total.total, 0),
+    };
+    const updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
+    updatedInvoices.push(newInvoiceData);
+    setState({ allInvoices: updatedInvoices });
   };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index?: number,
-    valueToBeChanged?: "itemPrice" | "itemQuantity",
+    valueToBeChanged?: "price" | "quantity",
   ) => {
     const { name, value } = e.target;
 
@@ -129,16 +159,16 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   const handleDiscard = () => {
     setFormData(emptyForm);
     setInvoiceDetails([emptyInvoiceDetails]);
-    setPaymentTerm("Select");
     setState({ isInvoiceModalOpen: false });
   };
 
   const calculateTotal = () => {
     const updatedItems = invoiceDetails.map((item) => ({
       ...item,
-      itemTotal: +item.itemQuantity * +item.itemPrice,
+      total: +item.quantity * +item.price,
     }));
     setInvoiceDetails(updatedItems);
+    return updatedItems;
   };
 
   useEffect(() => {
@@ -146,11 +176,11 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   }, [formData]);
 
   const paymentTermValue =
-    paymentTerm === "Select"
-      ? paymentTerm
-      : paymentTerm === "1"
-      ? `${paymentTerm} day`
-      : `${paymentTerm} days`;
+    formData.paymentTerms === "Select"
+      ? formData.paymentTerms
+      : formData.paymentTerms === "1"
+      ? `${formData.paymentTerms} day`
+      : `${formData.paymentTerms} days`;
 
   return (
     <ModalWrapper
@@ -266,7 +296,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
         px-4 "
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
-              <span className="font-semibold">{paymentTermValue}</span>
+              <span className="font-medium">{paymentTermValue}</span>
               <img
                 src={"/assets/icon-arrow-down.svg"}
                 alt="arrow-img"
@@ -293,10 +323,10 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
             <ItemList
               key={`${index}`}
               handleInputChange={handleInputChange}
-              name={invoiceItem.itemName}
-              quantity={invoiceItem.itemQuantity}
-              price={invoiceItem.itemPrice}
-              total={invoiceItem.itemTotal}
+              name={invoiceItem.name}
+              quantity={invoiceItem.quantity}
+              price={invoiceItem.price}
+              total={invoiceItem.total}
               handleDelete={handleDelete}
               index={index}
             />

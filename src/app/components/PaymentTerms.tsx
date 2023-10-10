@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IProps {
-  handleSelectPaymentTerm: (value: string) => void;
+  handleSelectPaymentTerm: (value: number) => void;
   isVisible: boolean;
 }
 
@@ -17,25 +17,25 @@ function PaymentTerms({ handleSelectPaymentTerm, isVisible }: IProps) {
     >
       <div
         className={selectDivStyle}
-        onClick={() => handleSelectPaymentTerm("1")}
+        onClick={() => handleSelectPaymentTerm(1)}
       >
         1 Day
       </div>
       <div
         className={selectDivStyle}
-        onClick={() => handleSelectPaymentTerm("7")}
+        onClick={() => handleSelectPaymentTerm(7)}
       >
         7 Days
       </div>
       <div
         className={selectDivStyle}
-        onClick={() => handleSelectPaymentTerm("14")}
+        onClick={() => handleSelectPaymentTerm(14)}
       >
         14 Days
       </div>
       <div
         className={selectDivStyle}
-        onClick={() => handleSelectPaymentTerm("30")}
+        onClick={() => handleSelectPaymentTerm(30)}
       >
         30 Days
       </div>
