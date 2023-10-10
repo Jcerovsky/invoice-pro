@@ -1,16 +1,16 @@
 import React from "react";
 
 interface IInputProps {
-  labelName: string;
   id?: string;
-  placeholder?: string;
-  type?: string;
-  style?: string;
-  value?: string | number;
-  min?: number;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
+  labelName: string;
   max?: string | number;
+  min?: string | number;
+  name: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  style?: string;
+  type?: string;
+  value?: string | number;
 }
 
 function InputField({

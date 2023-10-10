@@ -288,6 +288,8 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
                 style={"w-full"}
                 type={"date"}
                 name={"invoiceDate"}
+                min="2023-01-01"
+                max={new Date().toISOString().split("T")[0]}
                 onChange={handleInputChange}
                 value={formData.invoiceDate}
               />
