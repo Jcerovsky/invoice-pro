@@ -29,8 +29,6 @@ function AllInvoices() {
     handleFilter();
   }, [checkboxState]);
 
-  console.log("filtered", filteredInvoices);
-
   const invoicesToBeDisplayed =
     filteredInvoices?.length > 0 ? filteredInvoices : allInvoices;
 

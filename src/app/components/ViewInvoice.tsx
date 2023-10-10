@@ -6,13 +6,60 @@ import PaymentStatus from "@/app/components/PaymentStatus";
 import { formatDate } from "@/app/utils/formatDate";
 import { formatNumber } from "@/app/utils/formatNumber";
 import { Context, IInvoice } from "@/app/context/Context";
+import { useRouter } from "next/navigation";
 
 function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
-  const { screenSize } = useContext(Context)!;
+  const router = useRouter();
+  const { screenSize, allInvoices, setState } = useContext(Context)!;
 
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
-
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
+
+  const handleDelete = () => {
+    const updatedInvoices = allInvoices.filter(
+      (invoice) => invoice.id !== invoiceData.id,
+    );
+    setState({ allInvoices: updatedInvoices });
+    router.push("/");
+  };
+
+  const handleMarkAsPaid = () => {
+    const updatedInvoice = allInvoices.map((invoice) => {
+      if (invoice.id === invoiceData.id) {
+        return { ...invoice, status: "paid" };
+      }
+      return invoice;
+    });
+    setState({ allInvoices: updatedInvoice });
+  };
+
+  const Buttons = () => {
+    return (
+      <>
+        <button
+          className="px-6 py-2 cursor-pointer rounded-2xl bg-zinc-50 hover:bg-lightPurple text-mediumPurple
+             dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
+        >
+          Edit
+        </button>
+        <button
+          className="px-6 py-2 cursor-pointer rounded-2xl bg-red-500 hover:bg-red-400 text-white duration-200"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <button
+          className="px-6 py-2 cursor-pointer rounded-2xl bg-buttonPurple enabled:hover:bg-purple-500 text-white duration-200
+          disabled:opacity-50  disabled:cursor-not-allowed"
+          disabled={invoiceData.status === "paid"}
+          onClick={handleMarkAsPaid}
+        >
+          Mark as Paid
+        </button>
+      </>
+    );
+  };
+
   return (
     <div className="mt-28 mb-12 px-4 pb-20 desktop:mt-8 max-w-[43rem] ml-auto mr-auto">
       <GoBack showOnBiggerScreen={true} />
@@ -33,22 +80,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
             (screenSize === "small" || screenSize === "xs") && "hidden"
           } flex gap-2`}
         >
-          <button
-            className="px-6 py-2 cursor-pointer rounded-full bg-zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
-          >
-            Edit
-          </button>
-          <button className="px-6 py-2 cursor-pointer rounded-full bg-red-500 hover:bg-red-400 text-white duration-200">
-            Delete
-          </button>
-          <button
-            className="px-6 py-2 cursor-pointer rounded-full bg-buttonPurple enabled:hover:bg-purple-500 text-white duration-200
-              disabled:opacity-50  disabled:cursor-not-allowed"
-            disabled={invoiceData.status === "paid"}
-          >
-            Mark as Paid
-          </button>
+          <Buttons />
         </div>
       </div>
       <div
@@ -181,21 +213,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
             screenSize !== "small" && screenSize !== "xs" && "hidden"
           }`}
         >
-          <button
-            className="px-6 py-2 cursor-pointer rounded-2xl bg-zinc-50 hover:bg-lightPurple text-mediumPurple
-             dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
-          >
-            Edit
-          </button>
-          <button className="px-6 py-2 cursor-pointer rounded-2xl bg-red-500 hover:bg-red-400 text-white duration-200">
-            Delete
-          </button>
-          <button
-            className="px-6 py-2 cursor-pointer rounded-2xl bg-buttonPurple hover:bg-purple-500 text-white duration-200"
-            disabled={invoiceData.status === "paid"}
-          >
-            Mark as Paid
-          </button>
+          <Buttons />
         </div>
       </div>
     </div>
