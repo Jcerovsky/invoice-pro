@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "@/app/context/Context";
 import CustomCheckbox from "@/app/components/CustomCheckbox";
 import { handleClickOutside } from "@/app/utils/handleClickOutside";
-import NewInvoice from "@/app/components/NewInvoice";
+import InvoiceForm from "@/app/components/InvoiceForm";
 
 function InvoiceOverview({ invoiceCount }: { invoiceCount: number }) {
   const [isFilterMenuShown, setIsFilterMenuShown] = useState<boolean>(false);
@@ -106,9 +106,10 @@ function InvoiceOverview({ invoiceCount }: { invoiceCount: number }) {
         </div>
         <p>{screenSize === "small" ? "New" : "New Invoice"}</p>
       </button>
-      <NewInvoice
+      <InvoiceForm
         isOpen={isInvoiceModalOpen}
         onClose={() => setState({ isInvoiceModalOpen: false })}
+        formHeading={"New Invoice"}
       />
     </div>
   );

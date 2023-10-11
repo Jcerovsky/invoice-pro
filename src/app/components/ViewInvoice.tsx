@@ -9,12 +9,14 @@ import { Context, IInvoice } from "@/app/context/Context";
 import { useRouter } from "next/navigation";
 import ConfirmDeletion from "@/app/components/ConfirmDeletion";
 import ModalWrapper from "@/app/components/ModalWrapper";
+import EditInvoice from "@/app/components/EditInvoice";
 
 function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
   const router = useRouter();
   const { screenSize, allInvoices, setState } = useContext(Context)!;
   const [isDeleteInvoiceModalOpen, setIsDeleteInvoiceModalOpen] =
     useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
@@ -43,6 +45,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
         <button
           className="px-6 py-2 cursor-pointer rounded-2xl bg-zinc-50 hover:bg-lightPurple text-mediumPurple
              dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
+          onClick={() => setIsEditModalOpen(true)}
         >
           Edit
         </button>
@@ -230,6 +233,10 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
           setIsDeleteInvoiceModalOpen={setIsDeleteInvoiceModalOpen}
         />
       </ModalWrapper>
+      <EditInvoice
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
     </div>
   );
 }

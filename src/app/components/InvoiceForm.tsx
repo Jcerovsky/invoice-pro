@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import Button from "@/app/components/Button";
 import ItemList from "@/app/components/ItemList";
-import ModalWrapper from "@/app/components/ModalWrapper";
+import ModalWrapper, { ModalProps } from "@/app/components/ModalWrapper";
 import GoBack from "@/app/components/GoBack";
 import PaymentTerms from "@/app/components/PaymentTerms";
 import { calculateDueDate } from "@/app/utils/calculateDueDate";
@@ -31,12 +31,15 @@ interface IFormProps {
   paymentTerms: number;
   items: IInvoiceDetails[];
 }
-
 interface IInvoiceDetails {
   name: string;
   quantity: string | number;
   price: string | number;
   total: number;
+}
+interface IInvoiceForm extends ModalProps {
+  formHeading: string;
+  data?: IInvoice;
 }
 
 const emptyInvoiceDetails = {
@@ -63,7 +66,7 @@ const emptyForm = {
   items: [emptyInvoiceDetails],
 };
 
-function NewInvoice({ isOpen, onClose }: IModalProps) {
+function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
   const { setState, allInvoices } = useContext(Context)!;
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
@@ -71,6 +74,29 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   ]);
   const [paymentTermMissing, setPaymentTermMissing] = useState<boolean>(false);
   const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setFormData({
+        address: data.senderAddress.street,
+        city: data.senderAddress.city,
+        postCode: data.senderAddress.postCode,
+        country: data.senderAddress.country,
+        clientName: data.clientName,
+        clientEmail: data.clientEmail,
+        clientAddress: data.clientAddress.street,
+        clientCity: data.clientAddress.city,
+        clientPostCode: data.clientAddress.postCode,
+        clientCountry: data.clientAddress.country,
+        invoiceDate: data.createdAt,
+        projectDescription: data.description,
+        paymentTerms: data.paymentTerms,
+        items: data.items,
+      });
+      setInvoiceDetails(formData.items);
+      console.log("invoice details", invoiceDetails);
+    }
+  }, []);
 
   const handleAddInvoiceDetails = () => {
     const updatedItems = [...invoiceDetails, emptyInvoiceDetails];
@@ -195,7 +221,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
       >
         <GoBack />
         <h1 className="dark:text-white text-3xl font-bold mb-[3rem]">
-          New Invoice
+          {formHeading}
         </h1>
         <div>
           <p className="text-heavyPurple font-bold mb-6">Bill from</p>
@@ -332,7 +358,7 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
           <h2 className="text-gray-500 dark:text-heavyPurple font-medium text-2xl mb-4">
             Item List
           </h2>
-          {invoiceDetails.map((invoiceItem, index) => (
+          {formData.items.map((invoiceItem, index) => (
             <ItemList
               key={`${index}`}
               handleInputChange={handleInputChange}
@@ -385,4 +411,4 @@ function NewInvoice({ isOpen, onClose }: IModalProps) {
   );
 }
 
-export default NewInvoice;
+export default InvoiceForm;
