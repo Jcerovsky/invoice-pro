@@ -10,11 +10,6 @@ import { useObjectState } from "@/app/hooks/useObjectState";
 import { Context, IInvoice } from "@/app/context/Context";
 import { generateRandomId } from "@/app/utils/generateRandomId";
 
-interface IModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 interface IFormProps {
   address: string;
   city: string;
@@ -37,6 +32,7 @@ interface IInvoiceDetails {
   price: string | number;
   total: number;
 }
+
 interface IInvoiceForm extends ModalProps {
   formHeading: string;
   data?: IInvoice;
@@ -49,30 +45,27 @@ const emptyInvoiceDetails = {
   total: 0,
 };
 
-const emptyForm = {
-  address: "",
-  city: "",
-  postCode: "",
-  country: "",
-  clientName: "",
-  clientEmail: "",
-  clientAddress: "",
-  clientCity: "",
-  clientPostCode: "",
-  clientCountry: "",
-  invoiceDate: "",
-  projectDescription: "",
-  paymentTerms: 0,
-  items: [emptyInvoiceDetails],
-};
-
 function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
   const { setState, allInvoices } = useContext(Context)!;
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
-    emptyInvoiceDetails,
-  ]);
   const [paymentTermMissing, setPaymentTermMissing] = useState<boolean>(false);
+  const emptyForm = {
+    address: "",
+    city: "",
+    postCode: "",
+    country: "",
+    clientName: "",
+    clientEmail: "",
+    clientAddress: "",
+    clientCity: "",
+    clientPostCode: "",
+    clientCountry: "",
+    invoiceDate: "",
+    projectDescription: "",
+    paymentTerms: 0,
+    items: data !== undefined ? data.items : [emptyInvoiceDetails],
+  };
+
   const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
 
   useEffect(() => {
@@ -93,14 +86,11 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         paymentTerms: data.paymentTerms,
         items: data.items,
       });
-      setInvoiceDetails(formData.items);
-      console.log("invoice details", invoiceDetails);
     }
-  }, []);
+  }, [data]);
 
   const handleAddInvoiceDetails = () => {
-    const updatedItems = [...invoiceDetails, emptyInvoiceDetails];
-    setInvoiceDetails(updatedItems);
+    const updatedItems = [...formData.items, emptyInvoiceDetails];
     setFormData({ items: updatedItems });
   };
 
@@ -135,7 +125,7 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
           postCode: formData.clientPostCode,
           country: formData.clientCountry,
         },
-        items: invoiceDetails,
+        items: formData.items,
         total: formData.items.reduce((acc, total) => acc + total.total, 0),
       };
       let updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
@@ -143,7 +133,6 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       console.log(updatedInvoices);
       setState({ allInvoices: updatedInvoices });
       setFormData(emptyForm);
-      setInvoiceDetails([emptyInvoiceDetails]);
       setState({ isInvoiceModalOpen: false });
     }
     setPaymentTermMissing(true);
@@ -172,40 +161,37 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       }
 
       setFormData({ items: updatedItems });
-      setInvoiceDetails(updatedItems);
     } else {
       setFormData({ [name]: value });
     }
   };
 
   const handleDelete = (index: number) => {
-    if (invoiceDetails.length > 1 && index !== 0) {
-      const updatedInvoiceDetails = invoiceDetails.filter(
+    if (formData.items.length > 1 && index !== 0) {
+      const updatedInvoiceDetails = formData.items.filter(
         (_, i) => i !== index,
       );
-      setInvoiceDetails(updatedInvoiceDetails);
       setFormData({ items: updatedInvoiceDetails });
     }
   };
 
   const handleDiscard = () => {
     setFormData(emptyForm);
-    setInvoiceDetails([emptyInvoiceDetails]);
     setState({ isInvoiceModalOpen: false });
   };
 
   const calculateTotal = () => {
-    const updatedItems = invoiceDetails.map((item) => ({
+    const updatedItems = formData.items.map((item) => ({
       ...item,
       total: +item.quantity * +item.price,
     }));
-    setInvoiceDetails(updatedItems);
+    setFormData({ items: updatedItems });
     return updatedItems;
   };
 
   useEffect(() => {
     calculateTotal();
-  }, [formData]);
+  }, []);
 
   return (
     <ModalWrapper
