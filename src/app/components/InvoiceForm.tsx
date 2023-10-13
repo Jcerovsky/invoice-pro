@@ -89,7 +89,6 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         items: data.items,
       });
       setInvoiceDetails(formData.items);
-      console.log("invoice details", invoiceDetails);
     }
   }, []);
 
@@ -103,7 +102,7 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
     setFormData({ paymentTerms: value });
   };
 
-  const handleSubmit = (e: React.FormEvent, paymentStatus = "pending") => {
+  const handleSubmit = async (e: React.FormEvent, paymentStatus = "pending") => {
     e.preventDefault();
     if (formData.paymentTerms > 0) {
       const newInvoiceData: IInvoice = {
@@ -117,7 +116,7 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         paymentTerms: formData.paymentTerms,
         clientName: formData.clientName,
         clientEmail: formData.clientEmail,
-        status: paymentStatus,
+        status: data? data.status : paymentStatus,
         senderAddress: {
           street: formData.address,
           city: formData.city,
@@ -150,6 +149,19 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       setFormData(emptyForm);
       setInvoiceDetails([emptyInvoiceDetails]);
       setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
+
+
+      const res = await fetch('/api/invoices', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(newInvoiceData)
+      })
+
+      const {msg} = await res.json()
+      setState({errorMsg: msg})
+      console.log('error', msg)
     }
     setPaymentTermMissing(true);
   };
