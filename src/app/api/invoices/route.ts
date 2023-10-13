@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import { NextResponse} from "next/server";
 import connectDB from "@/app/lib/mongodb";
 
 export async function POST() {
@@ -11,5 +11,4 @@ export async function POST() {
     } catch (error) {
         return NextResponse.json({msg: ["There was an error - invoice not sent"]})
     }
-    return NextResponse.json({msg: 'hello from invoices route'})
 }
