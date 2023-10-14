@@ -12,8 +12,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const db = client.db("invoice");
   const collection = db.collection("invoice");
 
+  const invoiceId = data.invoiceId;
+
   try {
-    await collection.insertOne(data);
+    await collection.updateOne(
+      { invoiceId: invoiceId },
+      { $set: data },
+      { upsert: true },
+    );
     console.log("data inserted");
     await client.close();
     return res.json();
