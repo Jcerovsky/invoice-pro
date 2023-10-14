@@ -161,7 +161,7 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
 
       const {msg} = await res.json()
       setState({errorMsg: msg})
-      console.log('error', msg)
+      console.log('msg', msg)
     }
     setPaymentTermMissing(true);
   };
