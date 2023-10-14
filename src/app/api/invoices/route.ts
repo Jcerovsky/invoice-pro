@@ -1,17 +1,23 @@
-import {NextRequest, NextResponse} from "next/server";
 import connectDB from "@/app/lib/mongodb";
-import mongoose from 'mongoose'
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-    const MONGODB_URI =`mongodb+srv://jcerovsky8:${process.env.MONGODB_PASSWORD}@cluster0.ynym5ah.mongodb.net/`
-    let client
-    try {
-         client = await mongoose.connect(MONGODB_URI)
-         console.log('db connected')
-    } catch (error) {
-        return NextResponse.json({msg: ["There was an error - invoice not sent"]})
-    }
-    const data = await req.json()
+  let client = await connectDB();
 
-    console.log(data)
+  if (!client) {
+    return res.json();
+  }
+
+  const data = await req.json();
+  const db = client.db("invoice");
+  const collection = db.collection("invoice");
+
+  try {
+    await collection.insertOne(data);
+    console.log("data inserted");
+    await client.close();
+    return res.json();
+  } catch (error) {
+    await client.close();
+  }
 }
