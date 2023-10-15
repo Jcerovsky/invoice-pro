@@ -13,15 +13,20 @@ import EditInvoice from "@/app/components/EditInvoice";
 
 function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
   const router = useRouter();
-  const { screenSize, allInvoices, setState } = useContext(Context)!;
+  const { screenSize, allInvoices, setState, isEditModalOpen } =
+    useContext(Context)!;
   const [isDeleteInvoiceModalOpen, setIsDeleteInvoiceModalOpen] =
     useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    await fetch("/api/invoices", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(invoiceData.id),
+    });
     const updatedInvoices = allInvoices.filter(
       (invoice) => invoice.id !== invoiceData.id,
     );
@@ -29,7 +34,12 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
     router.push("/");
   };
 
-  const handleMarkAsPaid = () => {
+  const handleMarkAsPaid = async () => {
+    await fetch("/api/invoices", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(invoiceData),
+    });
     const updatedInvoice = allInvoices.map((invoice) => {
       if (invoice.id === invoiceData.id) {
         return { ...invoice, status: "paid" };
@@ -45,7 +55,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
         <button
           className="px-6 py-2 cursor-pointer rounded-2xl bg-zinc-50 hover:bg-lightPurple text-mediumPurple
              dark:bg-[#252945] dark:hover:bg-themeColorBg dark:text-white duration-200"
-          onClick={() => setIsEditModalOpen(true)}
+          onClick={() => setState({ isEditModalOpen: true })}
         >
           Edit
         </button>
@@ -235,7 +245,7 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
       </ModalWrapper>
       <EditInvoice
         isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={() => setState({ isEditModalOpen: false })}
       />
     </div>
   );

@@ -3,7 +3,6 @@
 import React, { createContext, ReactNode, useEffect } from "react";
 import { useObjectState } from "@/app/hooks/useObjectState";
 import theme from "tailwindcss/defaultTheme";
-import data from "../data/data.json";
 
 export interface IInvoice {
   id: string;
@@ -40,7 +39,9 @@ interface IContextProps {
   allInvoices: IInvoice[];
   screenSize: string;
   isInvoiceModalOpen: boolean;
+  isEditModalOpen: boolean;
   checkboxState: { paid: boolean; draft: boolean; pending: boolean };
+  errorMsg: string;
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -64,9 +65,11 @@ function ContextProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useObjectState<IContextProps>({
     theme: getLocalStorageItem("theme"),
     setState: () => {},
-    allInvoices: data,
+    allInvoices: [],
     screenSize: "",
     isInvoiceModalOpen: false,
+    isEditModalOpen: false,
+    errorMsg: "",
     checkboxState: { paid: false, draft: false, pending: false },
   });
 
@@ -90,6 +93,23 @@ function ContextProvider({ children }: { children: ReactNode }) {
     }
   }, [state.screenSize]);
 
+  useEffect(() => {
+    fetch("/api/invoices", { method: "GET" })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Server response was not ok.");
+        }
+      })
+      .then((data) => {
+        setState({ allInvoices: data });
+      })
+      .catch((error) => {
+        setState({ errorMsg: error });
+      });
+  }, []);
+
   return (
     <Context.Provider
       value={{
@@ -99,6 +119,8 @@ function ContextProvider({ children }: { children: ReactNode }) {
         screenSize: state.screenSize,
         checkboxState: state.checkboxState,
         isInvoiceModalOpen: state.isInvoiceModalOpen,
+        isEditModalOpen: state.isEditModalOpen,
+        errorMsg: state.errorMsg,
       }}
     >
       {children}

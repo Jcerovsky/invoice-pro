@@ -49,6 +49,10 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
   const { setState, allInvoices } = useContext(Context)!;
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [paymentTermMissing, setPaymentTermMissing] = useState<boolean>(false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf401ec
   const emptyForm = {
     address: "",
     city: "",
@@ -63,9 +67,14 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
     invoiceDate: "",
     projectDescription: "",
     paymentTerms: 0,
+<<<<<<< HEAD
     items: data !== undefined ? data.items : [emptyInvoiceDetails],
   };
 
+=======
+    items: data ? data.items : [emptyInvoiceDetails],
+  };
+>>>>>>> cf401ec
   const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
 
   useEffect(() => {
@@ -86,6 +95,10 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         paymentTerms: data.paymentTerms,
         items: data.items,
       });
+<<<<<<< HEAD
+=======
+      setInvoiceDetails(formData.items);
+>>>>>>> cf401ec
     }
   }, [data]);
 
@@ -98,11 +111,14 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
     setFormData({ paymentTerms: value });
   };
 
-  const handleSubmit = (e: React.FormEvent, paymentStatus = "pending") => {
+  const handleSubmit = async (
+    e: React.FormEvent,
+    paymentStatus = "pending",
+  ) => {
     e.preventDefault();
     if (formData.paymentTerms > 0) {
       const newInvoiceData: IInvoice = {
-        id: generateRandomId(allInvoices)!,
+        id: data ? data.id : generateRandomId(allInvoices)!,
         createdAt: formData.invoiceDate,
         paymentDue: calculateDueDate(
           formData.invoiceDate,
@@ -112,7 +128,7 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         paymentTerms: formData.paymentTerms,
         clientName: formData.clientName,
         clientEmail: formData.clientEmail,
-        status: paymentStatus,
+        status: data ? data.status : paymentStatus,
         senderAddress: {
           street: formData.address,
           city: formData.city,
@@ -129,11 +145,35 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         total: formData.items.reduce((acc, total) => acc + total.total, 0),
       };
       let updatedInvoices = Array.isArray(allInvoices) ? allInvoices : [];
-      updatedInvoices = [newInvoiceData, ...updatedInvoices];
-      console.log(updatedInvoices);
+
+      if (data) {
+        const index = updatedInvoices.findIndex(
+          (invoice) => invoice.id === data.id,
+        );
+        if (index !== -1) {
+          updatedInvoices[index] = newInvoiceData;
+        }
+      } else {
+        updatedInvoices = [newInvoiceData, ...updatedInvoices];
+      }
+
       setState({ allInvoices: updatedInvoices });
       setFormData(emptyForm);
+<<<<<<< HEAD
       setState({ isInvoiceModalOpen: false });
+=======
+      setInvoiceDetails([emptyInvoiceDetails]);
+      setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
+
+      const response = await fetch("/api/invoices", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(newInvoiceData),
+      });
+      console.log("response", response);
+>>>>>>> cf401ec
     }
     setPaymentTermMissing(true);
   };
@@ -177,7 +217,12 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
 
   const handleDiscard = () => {
     setFormData(emptyForm);
+<<<<<<< HEAD
     setState({ isInvoiceModalOpen: false });
+=======
+    setInvoiceDetails([emptyInvoiceDetails]);
+    setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
+>>>>>>> cf401ec
   };
 
   const calculateTotal = () => {
@@ -186,12 +231,20 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       total: +item.quantity * +item.price,
     }));
     setFormData({ items: updatedItems });
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf401ec
     return updatedItems;
   };
 
   useEffect(() => {
     calculateTotal();
+<<<<<<< HEAD
   }, []);
+=======
+  }, [invoiceDetails]);
+>>>>>>> cf401ec
 
   return (
     <ModalWrapper
@@ -365,31 +418,40 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         >
           + Add New Item
         </Button>
-        <div className="grid grid-cols-1 xxs:grid-cols-3 gap-2">
+        <div
+          className={`grid  ${
+            data ? "grid-cols-1 xxs:grid-cols-2" : "grid-cols-1 xxs:grid-cols-3"
+          } gap-2`}
+        >
           <Button
             style={
-              "bg-purple-50 hover:bg-blue-100 text-mediumPurple w-full xxs:max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
+              data
+                ? "bg-neutral-700 hover:bg-neutral-600 text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
+                : "bg-purple-50 hover:bg-blue-100 text-mediumPurple w-full xxs:max-w-[6rem] dark:hover:bg-neutral-800 dark:hover:text-white"
             }
             onClick={() => {
               const confirmed = confirm("Are you sure?");
               if (confirmed) handleDiscard();
             }}
           >
-            Discard
+            {data ? "Cancel" : "Discard"}
           </Button>
-          <Button
-            style={
-              "bg-neutral-700 hover:bg-neutral-600 text-gray-400 xxs:ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
-            }
-            onClick={(e) => handleSubmit(e, "draft")}
-          >
-            Save as Draft
-          </Button>
+          {!data && (
+            <Button
+              style={
+                "bg-neutral-700 hover:bg-neutral-600 text-gray-400 xxs:ml-auto dark:hover:bg-neutral-800 dark:hover:text-gray-200 hover:text-zinc-50"
+              }
+              onClick={(e) => handleSubmit(e, "draft")}
+            >
+              Save as Draft
+            </Button>
+          )}
+
           <Button
             style={"bg-buttonPurple hover:bg-purple-500 text-white"}
             type={"submit"}
           >
-            Save & Send
+            {data ? "Save Changes" : "Save & Send"}
           </Button>
         </div>
       </form>
