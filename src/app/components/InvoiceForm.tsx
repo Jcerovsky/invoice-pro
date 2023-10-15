@@ -32,7 +32,6 @@ interface IInvoiceDetails {
   price: string | number;
   total: number;
 }
-
 interface IInvoiceForm extends ModalProps {
   formHeading: string;
   data?: IInvoice;
@@ -48,11 +47,11 @@ const emptyInvoiceDetails = {
 function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
   const { setState, allInvoices } = useContext(Context)!;
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [invoiceDetails, setInvoiceDetails] = useState<Array<IInvoiceDetails>>([
+    emptyInvoiceDetails,
+  ]);
   const [paymentTermMissing, setPaymentTermMissing] = useState<boolean>(false);
-<<<<<<< HEAD
-=======
 
->>>>>>> cf401ec
   const emptyForm = {
     address: "",
     city: "",
@@ -67,14 +66,8 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
     invoiceDate: "",
     projectDescription: "",
     paymentTerms: 0,
-<<<<<<< HEAD
-    items: data !== undefined ? data.items : [emptyInvoiceDetails],
-  };
-
-=======
     items: data ? data.items : [emptyInvoiceDetails],
   };
->>>>>>> cf401ec
   const [formData, setFormData] = useObjectState<IFormProps>(emptyForm);
 
   useEffect(() => {
@@ -95,15 +88,13 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         paymentTerms: data.paymentTerms,
         items: data.items,
       });
-<<<<<<< HEAD
-=======
       setInvoiceDetails(formData.items);
->>>>>>> cf401ec
     }
-  }, [data]);
+  }, []);
 
   const handleAddInvoiceDetails = () => {
-    const updatedItems = [...formData.items, emptyInvoiceDetails];
+    const updatedItems = [...invoiceDetails, emptyInvoiceDetails];
+    setInvoiceDetails(updatedItems);
     setFormData({ items: updatedItems });
   };
 
@@ -159,9 +150,6 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
 
       setState({ allInvoices: updatedInvoices });
       setFormData(emptyForm);
-<<<<<<< HEAD
-      setState({ isInvoiceModalOpen: false });
-=======
       setInvoiceDetails([emptyInvoiceDetails]);
       setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
 
@@ -173,7 +161,6 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
         body: JSON.stringify(newInvoiceData),
       });
       console.log("response", response);
->>>>>>> cf401ec
     }
     setPaymentTermMissing(true);
   };
@@ -201,50 +188,41 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       }
 
       setFormData({ items: updatedItems });
+      setInvoiceDetails(updatedItems);
     } else {
       setFormData({ [name]: value });
     }
   };
 
   const handleDelete = (index: number) => {
-    if (formData.items.length > 1 && index !== 0) {
-      const updatedInvoiceDetails = formData.items.filter(
+    if (invoiceDetails.length > 1 && index !== 0) {
+      const updatedInvoiceDetails = invoiceDetails.filter(
         (_, i) => i !== index,
       );
+      setInvoiceDetails(updatedInvoiceDetails);
       setFormData({ items: updatedInvoiceDetails });
     }
   };
 
   const handleDiscard = () => {
     setFormData(emptyForm);
-<<<<<<< HEAD
-    setState({ isInvoiceModalOpen: false });
-=======
     setInvoiceDetails([emptyInvoiceDetails]);
     setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
->>>>>>> cf401ec
   };
 
   const calculateTotal = () => {
-    const updatedItems = formData.items.map((item) => ({
+    const updatedItems = invoiceDetails.map((item) => ({
       ...item,
       total: +item.quantity * +item.price,
     }));
     setFormData({ items: updatedItems });
-<<<<<<< HEAD
-=======
 
->>>>>>> cf401ec
     return updatedItems;
   };
 
   useEffect(() => {
     calculateTotal();
-<<<<<<< HEAD
-  }, []);
-=======
   }, [invoiceDetails]);
->>>>>>> cf401ec
 
   return (
     <ModalWrapper
