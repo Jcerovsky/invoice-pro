@@ -34,7 +34,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Screenshot
 
-![Screenshot](<./public/assets/screenshots/home-page-screenshot.png>)
+![Screenshot](<./public/screenshots/home-page-screenshot.png>)
 
 ### Built with    
 
