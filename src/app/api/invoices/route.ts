@@ -12,11 +12,12 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
   const db = client.db("invoice");
   const collection = db.collection("invoice");
   const data: IInvoice = await req.json();
+  console.log("data", data);
   const invoiceId = data.id;
 
   try {
     await collection.updateOne(
-      { invoiceId: invoiceId },
+      { id: invoiceId },
       { $set: data },
       { upsert: true },
     );
