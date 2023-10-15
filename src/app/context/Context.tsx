@@ -3,8 +3,6 @@
 import React, { createContext, ReactNode, useEffect } from "react";
 import { useObjectState } from "@/app/hooks/useObjectState";
 import theme from "tailwindcss/defaultTheme";
-import { set } from "zod";
-// import data from "../data/data.json";
 
 export interface IInvoice {
   id: string;
@@ -105,14 +103,10 @@ function ContextProvider({ children }: { children: ReactNode }) {
         }
       })
       .then((data) => {
-        console.log("data", data);
         setState({ allInvoices: data });
-        console.log("data after being set", data);
       })
-      .catch((error) => {
-        console.log("There was a problem!", error);
-      });
-  }, [state.theme]);
+      .catch((error) => {});
+  }, []);
 
   return (
     <Context.Provider

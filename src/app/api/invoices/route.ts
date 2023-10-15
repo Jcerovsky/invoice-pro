@@ -1,4 +1,4 @@
-import { NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/lib/mongodb";
 import { IInvoice } from "@/app/context/Context";
@@ -46,5 +46,27 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
   } catch (error) {
     await client.close();
     return res.status(500).json({ error: "There was an error fetching data" });
+  }
+}
+
+export async function DELETE(req: NextRequest, res: NextApiResponse) {
+  const client = await connectDB();
+
+  if (!client) {
+    return res.status(500).json({ error: "Could not connect to database" });
+  }
+
+  const db = client.db("invoice");
+  const collection = db.collection("invoice");
+  const data: IInvoice = await req.json();
+  const invoiceId = data.id;
+
+  try {
+    await collection.deleteOne({ invoiceId: invoiceId });
+    await client.close();
+    return res.json({ message: "Successfully deleted invoice" });
+  } catch (error) {
+    await client.close();
+    return res.status(500).json({ error: "Could not delete invoice" });
   }
 }
