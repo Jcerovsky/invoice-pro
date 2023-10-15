@@ -42,7 +42,7 @@ function AllInvoices() {
     <div>
       <InvoiceOverview invoiceCount={invoiceCount} />
 
-      {allInvoices.length === 0 ? (
+      {invoicesToBeDisplayed.length === 0 ? (
         <NoInvoices />
       ) : (
         invoicesToBeDisplayed.map((invoice) => (
