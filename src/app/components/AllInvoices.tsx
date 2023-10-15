@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context, IInvoice } from "@/app/context/Context";
 import Invoice from "@/app/components/Invoice";
 import InvoiceOverview from "@/app/components/InvoiceOverview";
+import NoInvoices from "@/app/components/NoInvoices";
 
 interface ICheckboxProps {
   paid: boolean;
@@ -41,11 +42,15 @@ function AllInvoices() {
     <div>
       <InvoiceOverview invoiceCount={invoiceCount} />
 
-      {invoicesToBeDisplayed.map((invoice) => (
-        <div key={crypto.randomUUID()}>
-          <Invoice invoiceData={invoice} />
-        </div>
-      ))}
+      {allInvoices.length === 0 ? (
+        <NoInvoices />
+      ) : (
+        invoicesToBeDisplayed.map((invoice) => (
+          <div key={crypto.randomUUID()}>
+            <Invoice invoiceData={invoice} />
+          </div>
+        ))
+      )}
     </div>
   );
 }
