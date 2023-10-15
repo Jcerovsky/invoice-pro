@@ -34,7 +34,12 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
     router.push("/");
   };
 
-  const handleMarkAsPaid = () => {
+  const handleMarkAsPaid = async () => {
+    await fetch("/api/invoices", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(invoiceData),
+    });
     const updatedInvoice = allInvoices.map((invoice) => {
       if (invoice.id === invoiceData.id) {
         return { ...invoice, status: "paid" };
