@@ -62,7 +62,7 @@ export async function DELETE(req: NextRequest, res: NextApiResponse) {
   const invoiceId = await req.json();
 
   try {
-    await collection.deleteOne({ invoiceId: invoiceId });
+    await collection.deleteOne({ id: invoiceId });
     await client.close();
     return res.json({ message: "Successfully deleted invoice" });
   } catch (error) {
@@ -84,10 +84,7 @@ export async function PATCH(req: NextRequest, res: NextApiResponse) {
   const invoiceId = data.id;
 
   try {
-    await collection.updateOne(
-      { invoiceId: invoiceId },
-      { $set: { status: "paid" } },
-    );
+    await collection.updateOne({ id: invoiceId }, { $set: { status: "paid" } });
     await client.close();
     return res.json({ message: "Updated invoice successfully" });
   } catch (error) {
