@@ -1,4 +1,4 @@
-# Invoice-Pro App
+<img width="1440" alt="home-page-screenshot" src="https://github.com/Jcerovsky/invoice-pro/assets/89118515/9ff01c64-319c-4f51-9fd5-41c7521698ed"># Invoice-Pro App
 
 Invoice-Pro is a web application built with MongoDB, Next js, React, TypeScript, and Tailwind CSS. It provides a seamless experience for managing, drafting, and editing invoices. 
 
@@ -20,6 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [Features](#features)
   - [Links](#links)
+  - [Screenshot](#screenshot)
   - [Built with](#built-with)
 - [Author](#author)
 
@@ -32,6 +33,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Links
 
 - Live Site URL: [link](https://invoice-pro-git-main-jcerovsky.vercel.app/)
+
+### Screenshot
+
+![Screenshot](<./public/assets/screenshots/home-page-screenshot.png>)
 
 ### Built with    
 
