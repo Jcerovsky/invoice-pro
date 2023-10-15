@@ -29,6 +29,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **CRUD operations**: Users can view, add, update and delete their invoices.
 - **Database**: Invoice-pro uses fast and reliable MongoDB database.
 - **Responsive Design**: The application is responsive and works well on both desktop and mobile devices.
+- **Theme**: Users can select between light mode and dark mode depending on their preferences.
 
 ### Links
 
