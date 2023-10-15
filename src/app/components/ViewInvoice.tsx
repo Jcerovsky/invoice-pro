@@ -21,7 +21,12 @@ function ViewInvoice({ invoiceData }: { invoiceData: IInvoice }) {
   const totalSum = invoiceData.items.reduce((a, b) => a + b.total, 0);
   const hideWhenScreenXs = `${screenSize === "xs" && "hidden"}`;
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    await fetch("/api/invoices", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(invoiceData.id),
+    });
     const updatedInvoices = allInvoices.filter(
       (invoice) => invoice.id !== invoiceData.id,
     );

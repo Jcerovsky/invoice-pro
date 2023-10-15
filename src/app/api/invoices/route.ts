@@ -58,8 +58,7 @@ export async function DELETE(req: NextRequest, res: NextApiResponse) {
 
   const db = client.db("invoice");
   const collection = db.collection("invoice");
-  const data: IInvoice = await req.json();
-  const invoiceId = data.id;
+  const invoiceId = await req.json();
 
   try {
     await collection.deleteOne({ invoiceId: invoiceId });

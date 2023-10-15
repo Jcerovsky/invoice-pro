@@ -105,7 +105,9 @@ function ContextProvider({ children }: { children: ReactNode }) {
       .then((data) => {
         setState({ allInvoices: data });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setState({ errorMsg: error });
+      });
   }, []);
 
   return (
