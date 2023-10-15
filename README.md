@@ -1,3 +1,5 @@
+# Invoice-Pro
+
 Invoice-Pro is a web application built with MongoDB, Next js, React, TypeScript, and Tailwind CSS. It provides a seamless experience for managing, drafting, and editing invoices. 
 
 ## Getting Started
