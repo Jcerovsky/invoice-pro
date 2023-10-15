@@ -1,18 +1,18 @@
-import connectDB from "@/app/lib/mongodb";
+import { NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
+import connectDB from "@/app/lib/mongodb";
+import { IInvoice } from "@/app/context/Context";
 
-export async function POST(req: NextRequest, res: NextResponse) {
-  let client = await connectDB();
+export async function POST(req: NextRequest, res: NextApiResponse) {
+  const client = await connectDB();
 
   if (!client) {
-    return res.json();
+    return res.status(500).json({ error: "Could not connect to database" });
   }
-
-  const data = await req.json();
   const db = client.db("invoice");
   const collection = db.collection("invoice");
-
-  const invoiceId = data.invoiceId;
+  const data: IInvoice = await req.json();
+  const invoiceId = data.id;
 
   try {
     await collection.updateOne(
@@ -20,10 +20,31 @@ export async function POST(req: NextRequest, res: NextResponse) {
       { $set: data },
       { upsert: true },
     );
-    console.log("data inserted");
     await client.close();
-    return res.json();
+    return res.status(201).json({ message: "Invoice saved successfully" });
   } catch (error) {
     await client.close();
+    return res
+      .status(500)
+      .json({ error: "An error occurred while saving invoice" });
+  }
+}
+
+export async function GET(req: NextRequest, res: NextApiResponse) {
+  const client = await connectDB();
+  if (!client) {
+    return res.status(500).json({ error: "Could not connect to database" });
+  }
+
+  const db = client.db("invoice");
+  const collection = db.collection("invoice");
+
+  try {
+    const data = await collection.find().toArray();
+    await client.close();
+    return NextResponse.json(data);
+  } catch (error) {
+    await client.close();
+    return res.status(500).json({ error: "There was an error fetching data" });
   }
 }

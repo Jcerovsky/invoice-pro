@@ -3,7 +3,8 @@
 import React, { createContext, ReactNode, useEffect } from "react";
 import { useObjectState } from "@/app/hooks/useObjectState";
 import theme from "tailwindcss/defaultTheme";
-import data from "../data/data.json";
+import { set } from "zod";
+// import data from "../data/data.json";
 
 export interface IInvoice {
   id: string;
@@ -42,7 +43,7 @@ interface IContextProps {
   isInvoiceModalOpen: boolean;
   isEditModalOpen: boolean;
   checkboxState: { paid: boolean; draft: boolean; pending: boolean };
-  errorMsg: string
+  errorMsg: string;
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -66,11 +67,11 @@ function ContextProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useObjectState<IContextProps>({
     theme: getLocalStorageItem("theme"),
     setState: () => {},
-    allInvoices: data,
+    allInvoices: [],
     screenSize: "",
     isInvoiceModalOpen: false,
     isEditModalOpen: false,
-    errorMsg: '',
+    errorMsg: "",
     checkboxState: { paid: false, draft: false, pending: false },
   });
 
@@ -94,6 +95,25 @@ function ContextProvider({ children }: { children: ReactNode }) {
     }
   }, [state.screenSize]);
 
+  useEffect(() => {
+    fetch("/api/invoices", { method: "GET" })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Server response was not ok.");
+        }
+      })
+      .then((data) => {
+        console.log("data", data);
+        setState({ allInvoices: data });
+        console.log("data after being set", data);
+      })
+      .catch((error) => {
+        console.log("There was a problem!", error);
+      });
+  }, [state.theme]);
+
   return (
     <Context.Provider
       value={{
@@ -104,7 +124,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         checkboxState: state.checkboxState,
         isInvoiceModalOpen: state.isInvoiceModalOpen,
         isEditModalOpen: state.isEditModalOpen,
-        errorMsg: state.errorMsg
+        errorMsg: state.errorMsg,
       }}
     >
       {children}

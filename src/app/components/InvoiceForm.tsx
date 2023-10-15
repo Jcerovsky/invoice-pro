@@ -153,19 +153,14 @@ function InvoiceForm({ isOpen, onClose, formHeading, data }: IInvoiceForm) {
       setInvoiceDetails([emptyInvoiceDetails]);
       setState({ isInvoiceModalOpen: false, isEditModalOpen: false });
 
-      const res = await fetch("/api/invoices", {
+      const response = await fetch("/api/invoices", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify(newInvoiceData),
       });
-
-      if (res.ok) {
-        const { msg } = await res.json();
-        setState({ errorMsg: msg });
-        console.log("msg", msg);
-      }
+      console.log("response", response);
     }
     setPaymentTermMissing(true);
   };
