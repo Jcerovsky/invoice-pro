@@ -42,6 +42,7 @@ interface IContextProps {
   isEditModalOpen: boolean;
   checkboxState: { paid: boolean; draft: boolean; pending: boolean };
   errorMsg: string;
+  isLoading: boolean;
   setState: (newState: Partial<IContextProps>) => void;
 }
 
@@ -70,6 +71,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
     isInvoiceModalOpen: false,
     isEditModalOpen: false,
     errorMsg: "",
+    isLoading: true,
     checkboxState: { paid: false, draft: false, pending: false },
   });
 
@@ -103,7 +105,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         }
       })
       .then((data) => {
-        setState({ allInvoices: data });
+        setState({ allInvoices: data, isLoading: false });
       })
       .catch((error) => {
         setState({ errorMsg: error });
@@ -121,6 +123,7 @@ function ContextProvider({ children }: { children: ReactNode }) {
         isInvoiceModalOpen: state.isInvoiceModalOpen,
         isEditModalOpen: state.isEditModalOpen,
         errorMsg: state.errorMsg,
+        isLoading: state.isLoading,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { Context, IInvoice } from "@/app/context/Context";
 import Invoice from "@/app/components/Invoice";
 import InvoiceOverview from "@/app/components/InvoiceOverview";
 import NoInvoices from "@/app/components/NoInvoices";
-import { set } from "zod";
+import Loading from "@/app/loading";
 
 interface ICheckboxProps {
   paid: boolean;
@@ -14,7 +14,7 @@ interface ICheckboxProps {
 }
 
 function AllInvoices() {
-  const { allInvoices, checkboxState } = useContext(Context)!;
+  const { allInvoices, checkboxState, isLoading } = useContext(Context)!;
   const [filteredInvoices, setFilteredInvoices] = useState<IInvoice[]>([]);
 
   const checkedItems = Object.keys(checkboxState).filter(
@@ -40,7 +40,9 @@ function AllInvoices() {
     <div>
       <InvoiceOverview invoiceCount={invoiceCount} />
 
-      {invoicesToBeDisplayed.length === 0 ? (
+      {isLoading ? (
+        <Loading />
+      ) : invoicesToBeDisplayed.length === 0 ? (
         <NoInvoices />
       ) : (
         invoicesToBeDisplayed.map((invoice) => (
