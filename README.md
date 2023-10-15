@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Invoice-Pro App
+
+Invoice-Pro is a web application built with MongoDB, Next js, React, TypeScript, and Tailwind CSS. It provides a seamless experience for managing, drafting, and editing invoices. 
 
 ## Getting Started
 
@@ -14,21 +16,31 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Table of contents
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [Features](#features)
+  - [Links](#links)
+  - [Built with](#built-with)
+- [Author](#author)
 
-## Learn More
+### Features
 
-To learn more about Next.js, take a look at the following resources:
+- **CRUD operations**: Users can view, add, update and delete their invoices.
+- **Database**: Invoice-pro uses fast and reliable MongoDB database.
+- **Responsive Design**: The application is responsive and works well on both desktop and mobile devices.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Live Site URL: [link](https://invoice-pro-git-main-jcerovsky.vercel.app/)
 
-## Deploy on Vercel
+### Built with    
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [MongoDB](https://www.mongodb.com/) - The Cloud-Native Database
+- [Next.js](https://nextjs.org/) - React Framework
+- [React](https://reactjs.org/) - JS library
+- [TypeScript](https://www.typescriptlang.org/) - Superset of JS
+- [TailwindCSS](https://tailwindcss.com/) - CSS Framework
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Author
+
+- LinkedIn - [Jakub Cerovsky](https://www.linkedin.com/in/jakub-cerovsky-288161173/)
